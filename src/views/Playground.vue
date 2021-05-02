@@ -1,259 +1,88 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="projects"
-    sort-by="mktcap"
-    class="elevation-1"
-  >
-    <template v-slot:top>
-      <v-toolbar
-        flat
-      >
-        <v-toolbar-title>DeFi Projects</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog
-          v-model="dialog"
-          max-width="500px"
-        >
-
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.name"
-                      label="Project name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.mktcap"
-                      label="mktcap"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.blockchain"
-                      label="blockchain"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.type"
-                      label="type"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.desc"
-                      label="desc"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="close"
+  <v-container fluid>
+    <v-switch
+      v-model="singleExpand"
+      label="Expand Single Item"
+    ></v-switch>
+    <v-data-iterator
+      :items="projects"
+      item-key="name"
+      :items-per-page="4"
+      :single-expand="singleExpand"
+      hide-default-footer
+    >
+      <template v-slot:default="{ items, isExpanded, expand }">
+        <v-row>
+          <v-col
+            v-for="item in items"
+            :key="item.name"
+            cols="12"
+            sm="6"
+            md="4"
+            lg="3"
+          >
+            <v-card>
+              <v-card-title>
+                <h4>{{ item.name }}</h4>
+              </v-card-title>
+              <v-switch
+                :input-value="isExpanded(item)"
+                :label="isExpanded(item) ? 'Expanded' : 'Closed'"
+                class="pl-4 mt-0"
+                @change="(v) => expand(item, v)"
+              ></v-switch>
+              <v-divider></v-divider>
+              <v-list
+                v-if="isExpanded(item)"
+                dense
               >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="save"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
-    <template v-slot:item.actions="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
-    </template>
-    <template v-slot:no-data>
-      <v-btn
-        color="primary"
-        @click="initialize"
-      >
-        Reset
-      </v-btn>
-    </template>
-  </v-data-table>
+                <v-list-item>
+                  <v-list-item-content>Calories:</v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    {{ item.calories }}
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-content>Fat:</v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    {{ item.fat }}
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-content>Carbs:</v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    {{ item.carbs }}
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-content>Protein:</v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    {{ item.protein }}
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-content>Sodium:</v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    {{ item.sodium }}
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-content>Calcium:</v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    {{ item.calcium }}
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-content>Iron:</v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    {{ item.iron }}
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+        </v-row>
+      </template>
+    </v-data-iterator>
+  </v-container>
 </template>
-
-<script>
-  export default {
-    data: () => ({
-      dialog: false,
-      dialogDelete: false,
-      headers: [
-        {
-          text: 'Project',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-        },
-        { text: 'mktcap', value: 'mktcap' },
-        { text: 'blockchain', value: 'blockchain' },
-        { text: 'type', value: 'type' },
-        { text: 'desc', value: 'desc' },
-        { text: 'Actions', value: 'actions', sortable: false },
-      ],
-      projects: [],
-      editedIndex: -1,
-      editedItem: {
-        name: '',
-        mktcap: '',
-        blockchain: '',
-        type: '',
-        desc: '',
-      },
-      defaultItem: {
-        name: '',
-        mktcap: '',
-        blockchain: '',
-        type: '',
-        desc: '',
-      },
-    }),
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
-    },
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-      dialogDelete (val) {
-        val || this.closeDelete()
-      },
-    },
-    created () {
-      this.initialize()
-    },
-    methods: {
-      initialize () {
-        this.projects = [
-          {
-            name: 'AAVE',
-            mktcap: '$2B',
-            blockchain: 'ETH',
-            type: 'Financial',
-            desc: 'AAVE Desc Here',
-          },
-          {
-            name: 'Compound',
-            mktcap: '10B',
-            blockchain: 'ETH',
-            type: 'Financial',
-            desc: 'Compound Desc Here',
-          },
-          {
-            name: 'PancakeSwap',
-            mktcap: '10B',
-            blockchain: 'BSC',
-            type: 'Financial',
-            desc: 'PancakeSwap Desc Here',
-          },
-        ]
-      },
-      editItem (item) {
-        this.editedIndex = this.projects.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-      deleteItem (item) {
-        this.editedIndex = this.projects.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-      deleteItemConfirm () {
-        this.projects.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.projects[this.editedIndex], this.editedItem)
-        } else {
-          this.projects.push(this.editedItem)
-        }
-        this.close()
-      },
-    },
-  }
-</script>
