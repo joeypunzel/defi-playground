@@ -1,20 +1,70 @@
 <template>
   <v-container fluid>
-    <v-switch
-      v-model="singleExpand"
-      label="Expand Single Item"
-    ></v-switch>
     <v-data-iterator
-      :items="projects"
-      item-key="name"
-      :items-per-page="4"
-      :single-expand="singleExpand"
+      :items="items"
+      :items-per-page.sync="itemsPerPage"
+      :page.sync="page"
+      :search="search"
+      :sort-by="sortBy.toLowerCase()"
+      :sort-desc="sortDesc"
       hide-default-footer
     >
-      <template v-slot:default="{ items, isExpanded, expand }">
+      <template v-slot:header>
+        <v-toolbar
+          dark
+          color="blue darken-3"
+          class="mb-1"
+        >
+          <v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+          ></v-text-field>
+          <template v-if="$vuetify.breakpoint.mdAndUp">
+            <v-spacer></v-spacer>
+            <v-select
+              v-model="sortBy"
+              flat
+              solo-inverted
+              hide-details
+              :items="keys"
+              prepend-inner-icon="mdi-magnify"
+              label="Sort by"
+            ></v-select>
+            <v-spacer></v-spacer>
+            <v-btn-toggle
+              v-model="sortDesc"
+              mandatory
+            >
+              <v-btn
+                large
+                depressed
+                color="blue"
+                :value="false"
+              >
+                <v-icon>mdi-arrow-up</v-icon>
+              </v-btn>
+              <v-btn
+                large
+                depressed
+                color="blue"
+                :value="true"
+              >
+                <v-icon>mdi-arrow-down</v-icon>
+              </v-btn>
+            </v-btn-toggle>
+          </template>
+        </v-toolbar>
+      </template>
+
+      <template v-slot:default="props">
         <v-row>
           <v-col
-            v-for="item in items"
+            v-for="item in props.items"
             :key="item.name"
             cols="12"
             sm="6"
@@ -22,60 +72,25 @@
             lg="3"
           >
             <v-card>
-              <v-card-title>
-                <h4>{{ item.name }}</h4>
+              <v-card-title class="subheading font-weight-bold">
+                {{ item.project }}
               </v-card-title>
-              <v-switch
-                :input-value="isExpanded(item)"
-                :label="isExpanded(item) ? 'Expanded' : 'Closed'"
-                class="pl-4 mt-0"
-                @change="(v) => expand(item, v)"
-              ></v-switch>
+
               <v-divider></v-divider>
-              <v-list
-                v-if="isExpanded(item)"
-                dense
-              >
-                <v-list-item>
-                  <v-list-item-content>Calories:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.calories }}
+
+              <v-list dense>
+                <v-list-item
+                  v-for="(key, index) in filteredKeys"
+                  :key="index"
+                >
+                  <v-list-item-content :class="{ 'blue--text': sortBy === key }">
+                    {{ key }}:
                   </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>Fat:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.fat }}
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>Carbs:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.carbs }}
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>Protein:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.protein }}
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>Sodium:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.sodium }}
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>Calcium:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.calcium }}
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>Iron:</v-list-item-content>
-                  <v-list-item-content class="align-end">
-                    {{ item.iron }}
+                  <v-list-item-content
+                    class="align-end"
+                    :class="{ 'blue--text': sortBy === key }"
+                  >
+                    {{ item[key.toLowerCase()] }}
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
@@ -83,6 +98,152 @@
           </v-col>
         </v-row>
       </template>
+
+      <template v-slot:footer>
+        <v-row
+          class="mt-2"
+          align="center"
+          justify="center"
+        >
+          <span class="grey--text">Items per page</span>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                dark
+                text
+                color="primary"
+                class="ml-2"
+                v-bind="attrs"
+                v-on="on"
+              >
+                {{ itemsPerPage }}
+                <v-icon>mdi-chevron-down</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(number, index) in itemsPerPageArray"
+                :key="index"
+                @click="updateItemsPerPage(number)"
+              >
+                <v-list-item-title>{{ number }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+
+          <v-spacer></v-spacer>
+
+          <span
+            class="mr-4
+            grey--text"
+          >
+            Page {{ page }} of {{ numberOfPages }}
+          </span>
+          <v-btn
+            fab
+            dark
+            color="blue darken-3"
+            class="mr-1"
+            @click="formerPage"
+          >
+            <v-icon>mdi-chevron-left</v-icon>
+          </v-btn>
+          <v-btn
+            fab
+            dark
+            color="blue darken-3"
+            class="ml-1"
+            @click="nextPage"
+          >
+            <v-icon>mdi-chevron-right</v-icon>
+          </v-btn>
+        </v-row>
+      </template>
     </v-data-iterator>
   </v-container>
 </template>
+
+<script>
+  export default {
+    data () {
+      return {
+        itemsPerPageArray: [4, 8, 12],
+        search: '',
+        filter: {},
+        sortDesc: false,
+        page: 1,
+        itemsPerPage: 4,
+        sortBy: 'project',
+        keys: [
+          'Project',
+          'Marketcap',
+          'Blockchain',
+          'Category',
+          'description',
+          'Creation',
+        ],
+        items: [
+          {
+            project: 'AAVE (AAVE)',
+            marketcap: 6.2,
+            blockchain: 'Ethereum',
+            category: 'Lending/Borrowing',
+            description: 'Lenders earn interest by providing liquidity, while borrowers collateralize crypto for loans from liquidity pools',
+            creation: '9/1/2018',
+          },
+          {
+            project: 'Compound (COMP)',
+            marketcap: 4.4,
+            blockchain: 'Ethereum',
+            category: 'Lending/Borrowing',
+            description: 'Establishes money markets by pooling assets and algorithmically setting interest rates',
+            creation: '6/1/2020',
+          },
+          {
+            project: 'PancakeSwap (CAKE)',
+            marketcap: 6.6,
+            blockchain: 'Binance Smart Chain',
+            category: 'Decentralized Exchange',
+            description: 'Biggest Automated Market Maker based exchange in BSC',
+            creation: '9/1/2020',
+          },
+          {
+            project: 'Uniswap (UNI)',
+            marketcap: 22,
+            blockchain: 'Ethereum',
+            category: 'Decentralized Exchange',
+            description: 'Swap an ERC-20 token(s) without the need of a centralized intermediary',
+            creation: '11/1/2018',
+          },
+          {
+            project: 'THORChain (RUNE)',
+            marketcap: 4.5,
+            blockchain: 'THORChain',
+            category: 'Cross-chain decentralized exchange',
+            description: 'Allows users to swap tokens across various Layer 1 blockchains',
+            creation: '10/1/2018',
+          },
+        ],
+      }
+    },
+    computed: {
+      numberOfPages () {
+        return Math.ceil(this.items.length / this.itemsPerPage)
+      },
+      filteredKeys () {
+        return this.keys.filter(key => key !== 'Project')
+      },
+    },
+    methods: {
+      nextPage () {
+        if (this.page + 1 <= this.numberOfPages) this.page += 1
+      },
+      formerPage () {
+        if (this.page - 1 >= 1) this.page -= 1
+      },
+      updateItemsPerPage (number) {
+        this.itemsPerPage = number
+      },
+    },
+  }
+</script>

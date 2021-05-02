@@ -276,6 +276,22 @@
             description: 'Biggest Automated Market Maker based exchange in BSC.',
             inceptionDate: '9/1/2020',
           },
+          {
+            projectName: 'Uniswap (UNI)',
+            marketCap: 22,
+            blockchainName: 'Ethereum',
+            categoryName: 'Decentralized Exchange',
+            description: 'Swap an ERC-20 token(s) without the need of a centralized intermediary',
+            inceptionDate: '11/1/2018',
+          },
+          {
+            projectName: 'THORChain (RUNE)',
+            marketCap: 4.5,
+            blockchainName: 'THORChain',
+            categoryName: 'Cross-chain decentralized exchange',
+            description: 'Allows users to swap tokens across various Layer 1 blockchains',
+            inceptionDate: '10/1/2018',
+          },
         ]
       },
       editItem (item) {
