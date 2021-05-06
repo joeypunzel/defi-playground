@@ -28,7 +28,7 @@
             v-bind="attrs"
             v-on="on"
           >
-            New Item
+            New Project
           </v-btn>
         </template>
           <v-card>
@@ -46,7 +46,7 @@
                   >
                     <v-text-field
                       v-model="editedItem.projectName"
-                      label="Project projectName"
+                      label="Project Name"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -204,7 +204,7 @@
         {
           text: 'Project (Ticker)',
           align: 'start',
-          sortable: false,
+          sortable: true,
           value: 'projectName',
         },
         { text: 'Mkt Cap ($B)', value: 'marketCap' },
@@ -218,7 +218,7 @@
       editedIndex: -1,
       editedItem: {
         projectName: '',
-        marketCap: 0,
+        marketCap: '',
         blockchainName: '',
         categoryName: '',
         description: '',
@@ -226,7 +226,7 @@
       },
       defaultItem: {
         projectName: '',
-        marketCap: 0,
+        marketCap: '',
         blockchainName: '',
         categoryName: '',
         description: '',

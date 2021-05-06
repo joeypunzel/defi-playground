@@ -54,7 +54,12 @@
           { title: 'Home', icon: 'mdi-home-variant' , to: '/' },
           { title: 'Playground', icon: 'mdi-slide' , to: '/playground' },
           { title: 'Favorites', icon: 'mdi-star-outline', to: '/favorites' },
-          { title: 'Admin Input', icon: 'mdi-plus', to: '/input' }
+          { title: 'Admin: Edit Projects', icon: 'mdi-database', to: '/ManageProjects' },
+          { title: 'Admin: Edit Blockchains', icon: 'mdi-database', to: '/ManageBlockchains' },
+          { title: 'Admin: Edit Catagories', icon: 'mdi-database', to: '/ManageCatagories' },
+          { title: 'Admin: Edit Users', icon: 'mdi-database', to: '/ManageUsers' }
+
+
         ],
     }),
     

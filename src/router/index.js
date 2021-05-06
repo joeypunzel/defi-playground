@@ -27,12 +27,36 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Playground.vue')
   },
   {
-    path: '/input',
-    name: 'Input',
+    path: '/ManageProjects',
+    name: 'ManageProjects',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Input.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/ManageProjects.vue')
+  },
+  {
+    path: '/ManageBlockchains',
+    name: 'ManageBlockchains',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/ManageBlockchains.vue')
+  },
+  {
+    path: '/ManageCatagories',
+    name: 'ManageCatagories',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/ManageCatagories.vue')
+  },
+  {
+    path: '/ManageUsers',
+    name: 'ManageUsers',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/ManageUsers.vue')
   }
 ]
 
