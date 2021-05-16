@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="favorites"
+    :items="items"
     sort-by="marketCap"
     class="elevation-1"
   >
@@ -75,7 +75,7 @@ import axios from "axios";
         { text: 'Creation Date', value: 'inceptionDate',sortable: true },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
-      favorites: [],
+      items: [],
       defaultItem: {
         projectName: '',
         marketCap: 0,
@@ -102,7 +102,7 @@ import axios from "axios";
       async getProjects() {
         try {
           const response = await axios.get("http://localhost:5000/projectList");
-          this.favorites = response.data;
+          this.items = response.data;
         } catch (err) {
           console.log(err);
         }

@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="projects"
+    :items="items"
     sort-by="marketCap"
     class="elevation-1"
   >
@@ -196,6 +196,9 @@
 </template>
 
 <script>
+// import axios
+import axios from "axios";
+
   export default {
     data: () => ({
       dialog: false,
@@ -214,7 +217,7 @@
         { text: 'Creation Date', value: 'inceptionDate' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
-      projects: [],
+      items: [],
       editedIndex: -1,
       editedItem: {
         projectName: '',
@@ -247,52 +250,16 @@
       },
     },
     created () {
-      this.initialize()
+      this.getProjects()
     },
     methods: {
-      initialize () {
-        this.projects = [
-          {
-            projectName: 'AAVE (AAVE)',
-            marketCap: '6.2',
-            blockchainName: 'Ethereum',
-            categoryName: 'Lending/Borrowing',
-            description: 'Lenders earn interest by providing liquidity, while borrowers collateralize crypto for loans from liquidity pools',
-            inceptionDate: '9/1/2018',
-          },
-          {
-            projectName: 'Compound (COMP)',
-            marketCap: '4.4',
-            blockchainName: 'Ethereum',
-            categoryName: 'Lending/Borrowing',
-            description: 'Establishes money markets by pooling assets together and algorithmically setting interest rates',
-            inceptionDate: '6/1/2020',
-          },
-          {
-            projectName: 'PancakeSwap (CAKE)',
-            marketCap: '6.6',
-            blockchainName: 'Binance Smart Chain',
-            categoryName: 'Decentralized Exchange',
-            description: 'Biggest Automated Market Maker based exchange in BSC.',
-            inceptionDate: '9/1/2020',
-          },
-          {
-            projectName: 'Uniswap (UNI)',
-            marketCap: 22,
-            blockchainName: 'Ethereum',
-            categoryName: 'Decentralized Exchange',
-            description: 'Swap an ERC-20 token(s) without the need of a centralized intermediary',
-            inceptionDate: '11/1/2018',
-          },
-          {
-            projectName: 'THORChain (RUNE)',
-            marketCap: 4.5,
-            blockchainName: 'THORChain',
-            categoryName: 'Cross-chain decentralized exchange',
-            description: 'Allows users to swap tokens across various Layer 1 blockchains',
-            inceptionDate: '10/1/2018',
-          },
-        ]
+      async getProjects() {
+        try {
+          const response = await axios.get("http://localhost:5000/projectList");
+          this.items = response.data;
+        } catch (err) {
+          console.log(err);
+        }
       },
       editItem (item) {
         this.editedIndex = this.projects.indexOf(item)
