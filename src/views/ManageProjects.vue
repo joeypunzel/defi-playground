@@ -262,17 +262,17 @@ import axios from "axios";
         }
       },
       editItem (item) {
-        this.editedIndex = this.projects.indexOf(item)
+        this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
       deleteItem (item) {
-        this.editedIndex = this.projects.indexOf(item)
+        this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
       deleteItemConfirm () {
-        this.projects.splice(this.editedIndex, 1)
+        this.items.splice(this.editedIndex, 1)
         this.closeDelete()
       },
       close () {
@@ -289,11 +289,22 @@ import axios from "axios";
           this.editedIndex = -1
         })
       },
-      save () {
+      async save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.projects[this.editedIndex], this.editedItem)
+          Object.assign(this.items[this.editedIndex], this.editedItem)
         } else {
-          this.projects.push(this.editedItem)
+            try {
+              await axios.post("http://localhost:5000/projectList", {
+                projectName: this.projectName,
+                marketCap: this.marketCap,
+              });
+              this.projectName = "";
+              this.marketCap = "";
+              this.$router.push("/");
+            } catch (err) {
+              console.log(err);
+            }
+          this.items.push(this.editedItem)
         }
         this.close()
       },
