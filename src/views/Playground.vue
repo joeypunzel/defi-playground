@@ -67,7 +67,7 @@
         <v-row>
           <v-col
             v-for="item in props.items"
-            :key="item.projectID"
+            :key="item.projectName"
             cols="12"
             sm="6"
             md="4"
@@ -92,7 +92,7 @@
                     class="align-end"
                     :class="{ 'blue--text': sortBy === key }"
                   >
-                    {{ item[key.toLowerCase()] }}
+                    {{ item[key] }}
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
@@ -168,44 +168,11 @@
 
 
 
- 
 
 <script>
-// import axios
+  // import axios
 import axios from "axios";
 
-export default {
-  name: "projectList",
-  data() {
-    return {
-      items: [],
-    };
-  },
- 
-  created() {
-    this.getProjects();
-  },
- 
-  methods: {
-    // Get All Projects
-    async getProjects() {
-      try {
-        const response = await axios.get("http://localhost:5000/projectList");
-        this.items = response.data;
-      } catch (err) {
-        console.log(err);
-      }
-    },
-  },
-};
-</script>
-
-
-
-
-
-<!--   
-<script>
   export default {
     data () {
       return {
@@ -215,57 +182,17 @@ export default {
         sortDesc: false,
         page: 1,
         itemsPerPage: 4,
-        sortBy: 'project',
+        sortBy: 'projectName',
         keys: [
-          'Project',
-          'Marketcap',
-          'Blockchain',
-          'Category',
+          'projectName',
+          'marketCap',
+          'blockchainName',
+          'categoryName',
           'description',
-          'Creation',
+          'inceptionDate',
         ],
-        items: [
-          {
-            project: 'AAVE (AAVE)',
-            marketcap: 6.2,
-            blockchain: 'Ethereum',
-            category: 'Lending/Borrowing',
-            description: 'Lenders earn interest by providing liquidity, while borrowers collateralize crypto for loans from liquidity pools',
-            creation: '9/1/2018',
-          },
-          {
-            project: 'Compound (COMP)',
-            marketcap: 4.4,
-            blockchain: 'Ethereum',
-            category: 'Lending/Borrowing',
-            description: 'Establishes money markets by pooling assets and algorithmically setting interest rates',
-            creation: '6/1/2020',
-          },
-          {
-            project: 'PancakeSwap (CAKE)',
-            marketcap: 6.6,
-            blockchain: 'Binance Smart Chain',
-            category: 'Decentralized Exchange',
-            description: 'Biggest Automated Market Maker based exchange in BSC',
-            creation: '9/1/2020',
-          },
-          {
-            project: 'Uniswap (UNI)',
-            marketcap: 22,
-            blockchain: 'Ethereum',
-            category: 'Decentralized Exchange',
-            description: 'Swap an ERC-20 token(s) without the need of a centralized intermediary',
-            creation: '11/1/2018',
-          },
-          {
-            project: 'THORChain (RUNE)',
-            marketcap: 4.5,
-            blockchain: 'THORChain',
-            category: 'Cross-chain decentralized exchange',
-            description: 'Allows users to swap tokens across various Layer 1 blockchains',
-            creation: '10/1/2018',
-          },
-        ],
+        items: []
+        ,
       }
     },
     computed: {
@@ -273,10 +200,21 @@ export default {
         return Math.ceil(this.items.length / this.itemsPerPage)
       },
       filteredKeys () {
-        return this.keys.filter(key => key !== 'Project')
+        return this.keys.filter(key => key !== 'projectName')
       },
     },
+    created () {
+      this.getProjects()
+    },
     methods: {
+      async getProjects() {
+        try {
+          const response = await axios.get("http://localhost:5000/projectList");
+          this.items = response.data;
+        } catch (err) {
+          console.log(err);
+        }
+      },
       nextPage () {
         if (this.page + 1 <= this.numberOfPages) this.page += 1
       },
