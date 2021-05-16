@@ -94,44 +94,10 @@
                     sm="6"
                     md="4"
                   >
-                  <v-dialog
-                  ref="dialog"
-                  v-model="modal"
-                  :return-value.sync="date"
-                  persistent
-                  width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="date"
-                      label="Inception date of project"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="date"
-                    scrollable
-                  >
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      text
-                      color="primary"
-                      @click="modal = false"
-                    >
-                      Cancel
-                    </v-btn>
-                    <v-btn
-                      text
-                      color="primary"
-                      @click="$refs.dialog.save(date)"
-                    >
-                      OK
-                    </v-btn>
-                  </v-date-picker>
-                </v-dialog>
+                  <v-text-field
+                  v-model="editedItem.inceptionDate"
+                  label="inceptionDate"
+                ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -252,6 +218,7 @@ import axios from "axios";
     created () {
       this.getProjects()
     },
+
     methods: {
       async getProjects() {
         try {
@@ -290,23 +257,26 @@ import axios from "axios";
         })
       },
       async save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.items[this.editedIndex], this.editedItem)
-        } else {
+
             try {
               await axios.post("http://localhost:5000/projectList", {
-                projectName: this.projectName,
-                marketCap: this.marketCap,
+                projectName: this.editedItem.projectName,
+                marketCap: this.editedItem.marketCap,
+                blockchainID: this.editedItem.blockchainName,
+                categoryID: this.editedItem.categoryName,
+                description: this.editedItem.description,
+                inceptionDate: this.editedItem.inceptionDate
               });
               this.projectName = "";
               this.marketCap = "";
+              this.blockchainName = "";
+              this.categoryName = "";
+              this.description = "";
+              this.inceptionDate = "";
               this.$router.push("/");
             } catch (err) {
               console.log(err);
             }
-          this.items.push(this.editedItem)
-        }
-        this.close()
       },
     },
   }

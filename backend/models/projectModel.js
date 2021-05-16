@@ -15,7 +15,7 @@ export const getProjects = (result) => {
 
 // Insert Project to Database
 export const insertProject = (data, result) => {
-    db.query("INSERT INTO project SET ?", [data], (err, results) => {             
+    db.query("INSERT INTO projects SET ?", [data], (err, results) => {             
         if(err) {
             console.log(err);
             result(err, null);
