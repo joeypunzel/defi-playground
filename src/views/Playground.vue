@@ -1,3 +1,5 @@
+
+
 <template>
   <v-container fluid>
     <v-data-iterator
@@ -65,7 +67,7 @@
         <v-row>
           <v-col
             v-for="item in props.items"
-            :key="item.name"
+            :key="item.projectID"
             cols="12"
             sm="6"
             md="4"
@@ -73,7 +75,7 @@
           >
             <v-card>
               <v-card-title class="subheading font-weight-bold">
-                {{ item.project }}
+                {{ item.projectName }}
               </v-card-title>
 
               <v-divider></v-divider>
@@ -163,6 +165,46 @@
   </v-container>
 </template>
 
+
+
+
+ 
+
+<script>
+// import axios
+import axios from "axios";
+
+export default {
+  name: "projectList",
+  data() {
+    return {
+      items: [],
+    };
+  },
+ 
+  created() {
+    this.getProjects();
+  },
+ 
+  methods: {
+    // Get All Projects
+    async getProjects() {
+      try {
+        const response = await axios.get("http://localhost:5000/projectList");
+        this.items = response.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
+};
+</script>
+
+
+
+
+
+<!--   
 <script>
   export default {
     data () {
@@ -247,3 +289,4 @@
     },
   }
 </script>
+-->

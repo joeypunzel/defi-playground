@@ -54,6 +54,9 @@
 </template>
 
 <script>
+// import axios
+import axios from "axios";
+
   export default {
     data: () => ({
       dialog: false,
@@ -76,8 +79,8 @@
       defaultItem: {
         projectName: '',
         marketCap: 0,
-        blockchainName: '',
-        categoryName: '',
+        blockchainID: '',
+        categoryID: '',
         description: '',
         inceptionDate: '',
       },
@@ -93,28 +96,16 @@
       },
     },
     created () {
-      this.initialize()
+      this.getProjects()
     },
     methods: {
-      initialize () {
-        this.favorites = [
-          {
-            projectName: 'AAVE (AAVE)',
-            marketCap: '6.2',
-            blockchainName: 'Ethereum',
-            categoryName: 'Lending/Borrowing',
-            description: 'Lenders earn interest by providing liquidity, while borrowers collateralize crypto for loans from liquidity pools',
-            inceptionDate: '9/1/2018',
-          },
-          {
-            projectName: 'PancakeSwap (CAKE)',
-            marketCap: '6.6',
-            blockchainName: 'Binance Smart Chain',
-            categoryName: 'Decentralized Exchange',
-            description: 'Biggest Automated Market Maker based exchange in BSC.',
-            inceptionDate: '9/1/2020',
-          },
-        ]
+      async getProjects() {
+        try {
+          const response = await axios.get("http://localhost:5000/projectList");
+          this.favorites = response.data;
+        } catch (err) {
+          console.log(err);
+        }
       },
       deleteItem (item) {
         this.editedIndex = this.favorites.indexOf(item)

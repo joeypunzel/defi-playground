@@ -8,6 +8,7 @@
     "lint": "./node_modules/\\@vue/cli-service/bin/vue-cli-service.js lint"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "express": "^4.17.1",
     "forever": "^3.0.4",
