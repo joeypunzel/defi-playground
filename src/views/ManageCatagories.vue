@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="catagories"
+    :items="items"
     sort-by="name"
     class="elevation-1"
   >
@@ -45,7 +45,7 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.name"
+                      v-model="editedItem.categoryName"
                       label="Catagory Name"
                     ></v-text-field>
                   </v-col>
@@ -112,6 +112,8 @@
 </template>
 
 <script>
+// import axios
+import axios from "axios";
   export default {
     data: () => ({
       dialog: false,
@@ -121,11 +123,11 @@
           text: 'Catagory',
           align: 'start',
           sortable: true,
-          value: 'name',
+          value: 'categoryName',
         },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
-      catagories: [],
+      items: [],
       editedIndex: -1,
       editedItem: {
         name: '',
@@ -148,34 +150,30 @@
       },
     },
     created () {
-      this.initialize()
+      this.getCategories()
     },
+
     methods: {
-      initialize () {
-        this.catagories = [
-          {
-            name: 'Lending/Borrowing',
-          },
-          {
-            name: 'Decentralized Exchange',
-          },
-          {
-            name: 'Cross-chain decentralized exchange',
-          },
-        ]
+      async getCategories() {
+        try {
+          const response = await axios.get("http://localhost:5000/categoryList");
+          this.items = response.data;
+        } catch (err) {
+          console.log(err);
+        }
       },
       editItem (item) {
-        this.editedIndex = this.catagories.indexOf(item)
+        this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
       deleteItem (item) {
-        this.editedIndex = this.catagories.indexOf(item)
+        this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
       deleteItemConfirm () {
-        this.catagories.splice(this.editedIndex, 1)
+        this.items.splice(this.editedIndex, 1)
         this.closeDelete()
       },
       close () {
@@ -193,10 +191,19 @@
         })
       },
       save () {
-          this.catagories.push(this.editedItem)
-        
-        this.close()
-      },
+          try {
+             axios.post("http://localhost:5000/categoryList", {
+              categoryName: this.editedItem.categoryName
+            });
+            this.categoryName = "";
+            //this.$router.push("/");
+            this.items.push(this.editedItem)
+            this.close()
+
+          } catch (err) {
+            console.log(err);
+          }
+          },
     },
   }
 </script>
