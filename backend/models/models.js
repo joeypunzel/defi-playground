@@ -24,4 +24,27 @@ export const insertProject = (data, result) => {
         }
     });   
 }
- 
+
+// Get All Blockchains
+export const getBlockchains = (result) => {
+    db.query("select blockchainName from blockchains", (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });   
+}
+
+// Insert Blockchain
+export const insertBlockchain = (data, result) => {
+    db.query("INSERT INTO blockchains SET ?", [data], (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });   
+}
