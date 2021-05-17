@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="users"
+    :items="items"
     sort-by="name"
     class="elevation-1"
   >
@@ -28,7 +28,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              New Blockchain
+              New User
             </v-btn>
           </template>
           <v-card>
@@ -45,7 +45,7 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.name"
+                      v-model="editedItem.userName"
                       label="User Name"
                     ></v-text-field>
                   </v-col>
@@ -103,7 +103,7 @@
     <template v-slot:no-data>
       <v-btn
         color="primary"
-        @click="initialize"
+        @click="initialized"
       >
         Reset
       </v-btn>
@@ -112,20 +112,24 @@
 </template>
 
 <script>
+// import axios
+import axios from "axios";
+
   export default {
     data: () => ({
       dialog: false,
       dialogDelete: false,
       headers: [
         {
-          text: 'users',
+          text: 'Username',
           align: 'start',
           sortable: true,
-          value: 'name',
+          value: 'userName',
         },
+        { text: 'Admin?', value: 'isAdmin' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
-      users: [],
+      items: [],
       editedIndex: -1,
       editedItem: {
         name: '',
@@ -148,21 +152,16 @@
       },
     },
     created () {
-      this.initialize()
+      this.getUsers()
     },
     methods: {
-      initialize () {
-        this.users = [
-          {
-            name: 'User A',
-          },
-          {
-            name: 'User B',
-          },
-          {
-            name: 'User C',
-          },
-        ]
+      async getUsers() {
+        try {
+          const response = await axios.get("http://localhost:5000/userList");
+          this.items = response.data;
+        } catch (err) {
+          console.log(err);
+        }
       },
       editItem (item) {
         this.editedIndex = this.users.indexOf(item)
@@ -192,14 +191,20 @@
           this.editedIndex = -1
         })
       },
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.users[this.editedIndex], this.editedItem)
-        } else {
-          this.users.push(this.editedItem)
+      async save () {
+        try {
+          await axios.post("http://localhost:5000/userList", {
+            userName: this.editedItem.userName,
+            isAdmin: this.editedItem.isAdmin
+          });
+          this.userName = "";
+          this.isAdmin = "";
+          this.items.push(this.editedItem)
+          this.close()
+        } catch (err) {
+          console.log(err);
         }
-        this.close()
-      },
+        },
     },
   }
 </script>
