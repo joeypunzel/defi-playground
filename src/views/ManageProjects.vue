@@ -283,7 +283,9 @@ import axios from "axios";
               this.categoryName = "";
               this.description = "";
               this.inceptionDate = "";
-              this.$router.push("/");
+              //this.$router.push("/");
+              this.items.push(this.editedItem)
+              this.close()
             } catch (err) {
               console.log(err);
             }

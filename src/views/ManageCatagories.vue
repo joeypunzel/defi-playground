@@ -193,11 +193,8 @@
         })
       },
       save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.catagories[this.editedIndex], this.editedItem)
-        } else {
           this.catagories.push(this.editedItem)
-        }
+        
         this.close()
       },
     },

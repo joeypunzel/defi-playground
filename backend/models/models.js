@@ -48,3 +48,52 @@ export const insertBlockchain = (data, result) => {
         }
     });   
 }
+
+// Get All Categories
+export const getCategories = (result) => {
+    db.query("select categoryName from categories", (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });   
+}
+
+// Insert Category
+export const insertCategory = (data, result) => {
+    db.query("INSERT INTO categories SET ?", [data], (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });   
+}
+
+// Get All Users
+export const getCategories = (result) => {
+    db.query("select username,isAdmin from users", (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });   
+}
+
+// Insert User
+export const insertUser = (data, result) => {
+    db.query("INSERT INTO users SET ?", [data], (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });   
+}
+

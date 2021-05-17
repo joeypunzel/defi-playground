@@ -1,5 +1,5 @@
 // Import function from Project Model
-import { getProjects,insertProject, getBlockchains, insertBlockchain } from "../models/models.js";
+import { getProjects,insertProject, getBlockchains, insertBlockchain, getCategories, insertCategory, getUsers, insertUser } from "../models/models.js";
  
 // Get All Projects
 export const showProjects = (req, res) => {
@@ -39,6 +39,52 @@ export const showBlockchains = (req, res) => {
 export const createBlockchain = (req, res) => {
     const data = req.body;
     insertBlockchain(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Get All Categories
+export const showCategories = (req, res) => {
+    getCategories((err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Create New Category
+export const createCategory = (req, res) => {
+    const data = req.body;
+    insertCategory(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Get All Users
+export const showUsers = (req, res) => {
+    getUsers((err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Create New User
+export const createUser = (req, res) => {
+    const data = req.body;
+    insertUser(data, (err, results) => {
         if (err){
             res.send(err);
         }else{

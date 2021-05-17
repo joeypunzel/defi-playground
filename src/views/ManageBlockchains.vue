@@ -199,6 +199,8 @@ import axios from "axios";
             this.blockchainName = "";
             //this.$router.push("/");
             this.items.push(this.editedItem)
+            this.close()
+
           } catch (err) {
             console.log(err);
           }
