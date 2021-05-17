@@ -74,7 +74,7 @@ export const insertCategory = (data, result) => {
 }
 
 // Get All Users
-export const getCategories = (result) => {
+export const getUsers = (result) => {
     db.query("select username,isAdmin from users", (err, results) => {             
         if(err) {
             console.log(err);
