@@ -40,63 +40,71 @@
               <v-container>
                 <v-row>
                   <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
+                    cols="24"
+                    sm="12"
+                    md="8"
                   >
                     <v-text-field
                       v-model="editedItem.projectName"
                       label="Project Name"
+                      outlined
                     ></v-text-field>
                   </v-col>
                   <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
+                    cols="24"
+                    sm="12"
+                    md="8"
                   >
                     <v-text-field
                       v-model="editedItem.marketCap"
                       label="marketCap"
+                      outlined
                     ></v-text-field>
                   </v-col>
                   <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.blockchainName"
-                      label="blockchainName"
-                    ></v-text-field>
-                  </v-col>
+                  class="d-flex"
+                  cols="12"
+                  sm="6"
+                >
+                  <v-select
+                    :items="blockchain_items"
+                    v-model="editedItem.blockchainName"
+                    label="blockchainName"
+                    outlined
+                  ></v-select>
+                </v-col>
+                <v-col
+                class="d-flex"
+                cols="12"
+                sm="6"
+              >
+                <v-select
+                  :items="category_items"
+                  v-model="editedItem.categoryName"
+                  label="categoryName"
+                  outlined
+                ></v-select>
+              </v-col>
                   <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.categoryName"
-                      label="categoryName"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
+                    cols="40"
+                    sm="25"
+                    md="14"
                   >
                     <v-text-field
                       v-model="editedItem.description"
                       label="description"
+                      outlined
                     ></v-text-field>
                   </v-col>
                   <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
+                    cols="24"
+                    sm="12"
+                    md="8"
                   >
                   <v-text-field
                   v-model="editedItem.inceptionDate"
                   label="inceptionDate"
+                  outlined
                 ></v-text-field>
                   </v-col>
                 </v-row>
@@ -184,6 +192,8 @@ import axios from "axios";
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       items: [],
+      blockchain_items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+      category_items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
       editedIndex: -1,
       editedItem: {
         projectName: '',

@@ -77,7 +77,7 @@
               <v-card-title class="subheading font-weight-bold">
                 {{ item.projectName }}
               </v-card-title>
-
+  
               <v-divider></v-divider>
 
               <v-list dense>
@@ -96,6 +96,22 @@
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
+
+              <v-btn
+              class="ma-2"
+              color="primary"
+              dark
+            >
+            Add to Favorites
+              <v-icon
+              small
+              @click="addToFavorites(item)"
+            >
+              mdi-star
+            </v-icon>
+              </v-btn>
+
+
             </v-card>
           </v-col>
         </v-row>
