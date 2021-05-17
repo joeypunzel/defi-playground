@@ -2,7 +2,7 @@
 import express from "express";
  
 // import function from controller
-import { showProjects,createProject } from "../controllers/controllers.js";
+import { showProjects,createProject, showBlockchains, createBlockchain } from "../controllers/controllers.js";
  
 // init express router
 const router = express.Router();
