@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="blockchains"
+    :items="items"
     sort-by="name"
     class="elevation-1"
   >
@@ -45,8 +45,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.name"
-                      label="Catagory Name"
+                      v-model="editedItem.blockchainName"
+                      label="Blockchain Name"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -112,6 +112,9 @@
 </template>
 
 <script>
+// import axios
+import axios from "axios";
+
   export default {
     data: () => ({
       dialog: false,
@@ -121,11 +124,11 @@
           text: 'Blockchains',
           align: 'start',
           sortable: true,
-          value: 'name',
+          value: 'blockchainName',
         },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
-      blockchains: [],
+      items: [],
       editedIndex: -1,
       editedItem: {
         name: '',
@@ -148,40 +151,30 @@
       },
     },
     created () {
-      this.initialize()
+      this.getBlockchains()
     },
+
     methods: {
-      initialize () {
-        this.blockchains = [
-          {
-            name: 'Blockchain',
-          },
-          {
-            name: 'Ethereum',
-          },
-          {
-            name: 'Binance Smart Chain',
-          },
-          {
-            name: 'Polkadot',
-          },
-          {
-            name: 'TRONchain',
-          },
-        ]
+      async getBlockchains() {
+        try {
+          const response = await axios.get("http://localhost:5000/blockchainList");
+          this.items = response.data;
+        } catch (err) {
+          console.log(err);
+        }
       },
       editItem (item) {
-        this.editedIndex = this.blockchains.indexOf(item)
+        this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
       deleteItem (item) {
-        this.editedIndex = this.blockchains.indexOf(item)
+        this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
       deleteItemConfirm () {
-        this.blockchains.splice(this.editedIndex, 1)
+        this.items.splice(this.editedIndex, 1)
         this.closeDelete()
       },
       close () {
@@ -199,13 +192,17 @@
         })
       },
       save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.blockchains[this.editedIndex], this.editedItem)
-        } else {
-          this.blockchains.push(this.editedItem)
-        }
-        this.close()
-      },
+          try {
+             axios.post("http://localhost:5000/blockchainList", {
+              blockchainName: this.editedItem.blockchainName
+            });
+            this.blockchainName = "";
+            //this.$router.push("/");
+            this.items.push(this.editedItem)
+          } catch (err) {
+            console.log(err);
+          }
+          },
     },
   }
 </script>
