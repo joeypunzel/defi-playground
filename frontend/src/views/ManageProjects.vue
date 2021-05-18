@@ -67,8 +67,8 @@
                   sm="6"
                 >
                   <v-select
-                    :items="blockchain_items"
-                    v-model="blockchain_items.blockchainName"
+                    :items="items"
+                    v-model="editedItem.blockchainName"
                     label="blockchainName"
                     outlined
                   ></v-select>
@@ -103,7 +103,7 @@
                   >
                   <v-text-field
                   v-model="editedItem.inceptionDate"
-                  label="inceptionDate"
+                  label="Creation Year (YYYY)"
                   outlined
                 ></v-text-field>
                   </v-col>
@@ -193,7 +193,7 @@ import axios from "axios";
       ],
       items: [],
       blockchain_items: [],
-      category_items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+      category_items: [],
       editedIndex: -1,
       editedItem: {
         projectName: '',
@@ -209,7 +209,7 @@ import axios from "axios";
         blockchainName: '',
         categoryName: '',
         description: '',
-        inceptionDate: 1/1/2020,
+        inceptionDate: '',
       },
     }),
     computed: {
@@ -227,7 +227,8 @@ import axios from "axios";
     },
     created () {
       this.getProjects(),
-      this.getBlockchains()
+      this.getBlockchains(),
+      this.getCategories()
     },
 
     methods: {
@@ -243,6 +244,14 @@ import axios from "axios";
         try {
           const response = await axios.get("http://localhost:5000/blockchainList");
           this.blockchain_items = response.data;
+        } catch (err) {
+          console.log(err);
+        }
+      },
+      async getCategories() {
+        try {
+          const response = await axios.get("http://localhost:5000/categoryList");
+          this.category_items = response.data;
         } catch (err) {
           console.log(err);
         }

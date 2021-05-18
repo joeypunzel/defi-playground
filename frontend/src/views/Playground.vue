@@ -101,7 +101,7 @@
               class="ma-2"
               color="primary"
               dark
-              @click="save"
+              @click="save(item)"
             >
             Add to Favorites
               <v-icon
@@ -200,7 +200,6 @@ import axios from "axios";
         itemsPerPage: 4,
         sortBy: 'projectName',
         keys: [
-          'projectID',
           'projectName',
           'marketCap',
           'blockchainName',
@@ -241,14 +240,14 @@ import axios from "axios";
       updateItemsPerPage (number) {
         this.itemsPerPage = number
       },
-      async save () {
+      async save (item) {
+        let itemIndex = this.items.indexOf(item);
+        console.log(this.items[itemIndex]);
         try {
           await axios.post("http://localhost:5000/favoriteList", {
-            userID: 1,
-            projectID: 2
+            projectName: this.items[itemIndex].projectName
           });
-          this.projectID = "";
-          this.items.push(this.editedItem)
+          this.projectName = "";
           this.close()
         } catch (err) {
           console.log(err);
