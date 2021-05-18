@@ -3,7 +3,7 @@ import db from "../config/database.js";
  
 // Get All Projects
 export const getProjects = (result) => {
-    db.query("select p.projectName,p.marketCap, b.blockchainName,c.categoryName, p.description,p.inceptionDate from projects p left join blockchains b on p.blockchainID = b.blockchainID left join categories c on p.categoryID = c.categoryID;;", (err, results) => {             
+    db.query("select p.projectID,p.projectName,p.marketCap, b.blockchainName,c.categoryName, p.description,p.inceptionDate from projects p left join blockchains b on p.blockchainID = b.blockchainID left join categories c on p.categoryID = c.categoryID;;", (err, results) => {             
         if(err) {
             console.log(err);
             result(err, null);
@@ -99,7 +99,7 @@ export const insertUser = (data, result) => {
 
 // Get All Favorites
 export const getFavorites = (result) => {
-    db.query("select c.projectID,c.projectName,c.marketCap,x.blockchainName,y.categoryName,c.projectName,c.description from favorites a left join users b on a.userID = b.userID left join projects c on a.projectID = c.projectID left join blockchains x on c.blockchainID = x.blockchainID left join categories y on c.categoryID = y.categoryID;", (err, results) => {             
+    db.query("select c.projectName,c.marketCap,x.blockchainName,y.categoryName,c.projectName,c.description from favorites a left join users b on a.userID = b.userID left join projects c on a.projectID = c.projectID left join blockchains x on c.blockchainID = x.blockchainID left join categories y on c.categoryID = y.categoryID;", (err, results) => {             
         if(err) {
             console.log(err);
             result(err, null);
@@ -110,8 +110,8 @@ export const getFavorites = (result) => {
 }
 
 // Insert User
-export const insertFavorite = (data, result) => {
-    db.query("INSERT INTO favorites SET ?", [data], (err, results) => {             
+export const insertFavorite = (data,result) => {
+    db.query("INSERT INTO favorites SET ?",[data], (err, results) => {             
         if(err) {
             console.log(err);
             result(err, null);

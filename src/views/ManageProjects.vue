@@ -68,7 +68,7 @@
                 >
                   <v-select
                     :items="blockchain_items"
-                    v-model="editedItem.blockchainName"
+                    v-model="blockchain_items.blockchainName"
                     label="blockchainName"
                     outlined
                   ></v-select>
@@ -192,7 +192,7 @@ import axios from "axios";
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       items: [],
-      blockchain_items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+      blockchain_items: [],
       category_items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
       editedIndex: -1,
       editedItem: {
@@ -226,7 +226,8 @@ import axios from "axios";
       },
     },
     created () {
-      this.getProjects()
+      this.getProjects(),
+      this.getBlockchains()
     },
 
     methods: {
@@ -234,6 +235,14 @@ import axios from "axios";
         try {
           const response = await axios.get("http://localhost:5000/projectList");
           this.items = response.data;
+        } catch (err) {
+          console.log(err);
+        }
+      },
+      async getBlockchains() {
+        try {
+          const response = await axios.get("http://localhost:5000/blockchainList");
+          this.blockchain_items = response.data;
         } catch (err) {
           console.log(err);
         }

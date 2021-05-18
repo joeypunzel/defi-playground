@@ -101,11 +101,11 @@
               class="ma-2"
               color="primary"
               dark
+              @click="save"
             >
             Add to Favorites
               <v-icon
-              small
-              @click="addToFavorites(item)"
+              text
             >
               mdi-star
             </v-icon>
@@ -200,6 +200,7 @@ import axios from "axios";
         itemsPerPage: 4,
         sortBy: 'projectName',
         keys: [
+          'projectID',
           'projectName',
           'marketCap',
           'blockchainName',
@@ -240,14 +241,13 @@ import axios from "axios";
       updateItemsPerPage (number) {
         this.itemsPerPage = number
       },
-      async addToFavorites () {
+      async save () {
         try {
           await axios.post("http://localhost:5000/favoriteList", {
             userID: 1,
-            projectName: this.editedItem.projectName
+            projectID: 2
           });
-          this.userName = "";
-          this.isAdmin = "";
+          this.projectID = "";
           this.items.push(this.editedItem)
           this.close()
         } catch (err) {
