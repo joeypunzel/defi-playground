@@ -1,5 +1,5 @@
 // Import function from Project Model
-import { getProjects,insertProject, getBlockchains, insertBlockchain, getCategories, insertCategory, getUsers, insertUser } from "../models/models.js";
+import { getProjects,insertProject, getBlockchains, insertBlockchain, getCategories, insertCategory, getUsers, insertUser, insertFavorite, getFavorites } from "../models/models.js";
  
 // Get All Projects
 export const showProjects = (req, res) => {
@@ -85,6 +85,29 @@ export const showUsers = (req, res) => {
 export const createUser = (req, res) => {
     const data = req.body;
     insertUser(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Get All Favorites
+export const showFavorites = (req, res) => {
+    getFavorites((err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Create New Favorite
+export const createFavorite = (req, res) => {
+    const data = req.body;
+    insertFavorite(data, (err, results) => {
         if (err){
             res.send(err);
         }else{

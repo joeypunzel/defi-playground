@@ -2,7 +2,7 @@
 import express from "express";
  
 // import function from controller
-import { showProjects,createProject, showBlockchains, createBlockchain, showCategories, createCategory, showUsers, createUser } from "../controllers/controllers.js";
+import { showProjects,createProject, showBlockchains, createBlockchain, showCategories, createCategory, showUsers, createUser, showFavorites, createFavorite } from "../controllers/controllers.js";
  
 // init express router
 const router = express.Router();
@@ -30,6 +30,12 @@ router.get('/userList', showUsers);
 
 // Create New User
 router.post('/userList', createUser);
+
+// Get All Favorites
+router.get('/favoriteList', showFavorites);
+
+// Create New Favorite
+router.post('/favoriteList', createFavorite);
 
 // export default router
 export default router;

@@ -240,6 +240,20 @@ import axios from "axios";
       updateItemsPerPage (number) {
         this.itemsPerPage = number
       },
+      async addToFavorites () {
+        try {
+          await axios.post("http://localhost:5000/favoriteList", {
+            userID: 1,
+            projectName: this.editedItem.projectName
+          });
+          this.userName = "";
+          this.isAdmin = "";
+          this.items.push(this.editedItem)
+          this.close()
+        } catch (err) {
+          console.log(err);
+        }
+        },
     },
   }
 </script>

@@ -96,12 +96,12 @@ import axios from "axios";
       },
     },
     created () {
-      this.getProjects()
+      this.getFavorites()
     },
     methods: {
-      async getProjects() {
+      async getFavorites() {
         try {
-          const response = await axios.get("http://localhost:5000/projectList");
+          const response = await axios.get("http://localhost:5000/favoriteList");
           this.items = response.data;
         } catch (err) {
           console.log(err);
