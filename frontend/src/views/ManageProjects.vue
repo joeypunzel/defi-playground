@@ -67,7 +67,9 @@
                   sm="6"
                 >
                   <v-select
-                    :items="items"
+                    :items="blockchain_items"
+                    item-text="blockchainName"
+                    item-value="blockchainID"
                     v-model="editedItem.blockchainName"
                     label="blockchainName"
                     outlined
@@ -80,6 +82,8 @@
               >
                 <v-select
                   :items="category_items"
+                  item-text="categoryName"
+                  item-value="categoryID"
                   v-model="editedItem.categoryName"
                   label="categoryName"
                   outlined
@@ -290,14 +294,14 @@ import axios from "axios";
               await axios.post("http://localhost:5000/projectList", {
                 projectName: this.editedItem.projectName,
                 marketCap: this.editedItem.marketCap,
-                blockchainID: this.editedItem.blockchainName,
-                categoryID: this.editedItem.categoryName,
+                blockchainName: this.editedItem.blockchainName,
+                categoryName: this.editedItem.categoryName,
                 description: this.editedItem.description,
                 inceptionDate: this.editedItem.inceptionDate
               });
               this.projectName = "";
               this.marketCap = "";
-              this.blockchainName = "";
+              this.blockchainID = "";
               this.categoryName = "";
               this.description = "";
               this.inceptionDate = "";
