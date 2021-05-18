@@ -15,7 +15,8 @@ export const getProjects = (result) => {
 
 // Insert Project to Database
 export const insertProject = (data, result) => {
-    db.query("INSERT INTO projects SET ?,?,(select blockchainID from blockchains where ?),(select categoryID from categories where ?),?,?", [data], (err, results) => {             
+    let ugly = [data.projectName, data.marketCap, data.blockchainName, data.categoryName, data.description, data.inceptionDate]
+    db.query("INSERT INTO projects(projectName,marketCap,blockchainID,categoryID,description,inceptionDate) VALUES(?,?,(select blockchainID from blockchains where blockchainName = ?),(select categoryID from categories where categoryName = ?),?,?)",ugly, (err, results) => {             
         if(err) {
             console.log(err);
             result(err, null);
