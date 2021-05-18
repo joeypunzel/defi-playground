@@ -13,7 +13,7 @@ export const getProjects = (result) => {
     });   
 }
 
-// Insert Project to Database
+// Insert Project
 export const insertProject = (data, result) => {
     let ugly = [data.projectName, data.marketCap, data.blockchainName, data.categoryName, data.description, data.inceptionDate]
     db.query("INSERT INTO projects(projectName,marketCap,blockchainID,categoryID,description,inceptionDate) VALUES(?,?,(select blockchainID from blockchains where blockchainName = ?),(select categoryID from categories where categoryName = ?),?,?)",ugly, (err, results) => {             
@@ -110,7 +110,7 @@ export const getFavorites = (result) => {
     });   
 }
 
-// Insert User
+// Insert Favorite
 export const insertFavorite = (data,result) => {
     db.query("insert into favorites (userID,projectID) VALUES ((select userID from users where userID=1),(select projectID from projects where ?))",[data], (err, results) => {             
         if(err) {
