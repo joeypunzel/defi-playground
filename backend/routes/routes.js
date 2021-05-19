@@ -1,41 +1,56 @@
-// import express
-import express from "express";
- 
-// import function from controller
-import { showProjects,createProject, showBlockchains, createBlockchain, showCategories, createCategory, showUsers, createUser, showFavorites, createFavorite } from "../controllers/controllers.js";
- 
-// init express router
+
+//module.exports = app => {
+//const queries = require("../controllers/controllers.js");
+//}
+
+const db = require("../config/database.js");
+const express = require('express');
 const router = express.Router();
+const funcs = require("../controllers/controllers.js")
+
+
  
 // Get All Project
-router.get('/projectList', showProjects);
+router.get('/projectList',funcs.showProjects);
+// get user lists
+
+
+//router.get('/projectList', function(req, res) {
+//    let sql = `select p.projectID,p.projectName,p.marketCap, b.blockchainName,c.categoryName, p.description,p.inceptionDate from projects p left join blockchains b on p.blockchainID = b.blockchainID left join categories c on p.categoryID = c.categoryID;`;
+//   db.query(sql, function(err, data, fields) {
+//        if (err) throw err;
+//        res.json({
+//            data
+//        })
+//      })  
+//  });
+
 
 // Create New Project
-router.post('/projectList', createProject);
+//app.post('/projectList', queries.createProject);
 
 // Get All Blockchains
-router.get('/blockchainList', showBlockchains);
+//app.get('/blockchainList', queries.showBlockchains);
 
 // Create New Blockchain
-router.post('/blockchainList', createBlockchain);
+//app.post('/blockchainList', queries.createBlockchain);
 
 // Get All Categories
-router.get('/categoryList', showCategories);
+//app.get('/categoryList', queries.showCategories);
 
 // Create New Blockchain
-router.post('/categoryList', createCategory);
+//app.post('/categoryList', queries.createCategory);
 
 // Get All Users
-router.get('/userList', showUsers);
+//app.get('/userList', queries.showUsers);
 
 // Create New User
-router.post('/userList', createUser);
+//app.post('/userList', queries.createUser);
 
 // Get All Favorites
-router.get('/favoriteList', showFavorites);
+//app.get('/favoriteList', queries.showFavorites);
 
 // Create New Favorite
-router.post('/favoriteList', createFavorite);
+//app.post('/favoriteList', queries.createFavorite);
 
-// export default router
-export default router;
+module.exports = router;

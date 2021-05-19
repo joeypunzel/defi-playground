@@ -1,9 +1,9 @@
 // import express
-import express from "express";
+const express = require("express");
 // import cors
-import cors from "cors";
+const cors = require("cors");
 // import routes
-import Router from "./routes/routes.js";
+const Router = require('./routes/routes.js');
  
 // init express
 const app = express();
@@ -13,7 +13,13 @@ app.use(express.json());
  
 // use cors
 app.use(cors());
- 
+
+// simple route
+//app.get("/", (req, res) => {
+//  res.json({ message: "Welcome to backend defi-playground node application." });
+//});
+
+
 // use router
 app.use(Router);
  

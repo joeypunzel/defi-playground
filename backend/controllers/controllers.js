@@ -1,9 +1,9 @@
-// Import function from Project Model
-import { getProjects,insertProject, getBlockchains, insertBlockchain, getCategories, insertCategory, getUsers, insertUser, insertFavorite, getFavorites } from "../models/models.js";
- 
+const models = require("../models/models.js")
+
+
 // Get All Projects
-export const showProjects = (req, res) => {
-    getProjects((err, results) => {
+const showProjects = (req, res) => {
+    models.getProjects((err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -13,9 +13,9 @@ export const showProjects = (req, res) => {
 }
 
 // Create New Project
-export const createProject = (req, res) => {
+const createProject = (req, res) => {
     const data = req.body;
-    insertProject(data, (err, results) => {
+    models.insertProject(data, (err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -25,8 +25,8 @@ export const createProject = (req, res) => {
 }
 
 // Get All Blockchains
-export const showBlockchains = (req, res) => {
-    getBlockchains((err, results) => {
+const showBlockchains = (req, res) => {
+    models.getBlockchains((err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -36,9 +36,9 @@ export const showBlockchains = (req, res) => {
 }
 
 // Create New Blockchain
-export const createBlockchain = (req, res) => {
+const createBlockchain = (req, res) => {
     const data = req.body;
-    insertBlockchain(data, (err, results) => {
+    models.insertBlockchain(data, (err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -48,8 +48,8 @@ export const createBlockchain = (req, res) => {
 }
 
 // Get All Categories
-export const showCategories = (req, res) => {
-    getCategories((err, results) => {
+const showCategories = (req, res) => {
+    models.getCategories((err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -59,9 +59,9 @@ export const showCategories = (req, res) => {
 }
 
 // Create New Category
-export const createCategory = (req, res) => {
+const createCategory = (req, res) => {
     const data = req.body;
-    insertCategory(data, (err, results) => {
+    models.insertCategory(data, (err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -71,8 +71,8 @@ export const createCategory = (req, res) => {
 }
 
 // Get All Users
-export const showUsers = (req, res) => {
-    getUsers((err, results) => {
+const showUsers = (req, res) => {
+    models.getUsers((err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -82,9 +82,9 @@ export const showUsers = (req, res) => {
 }
 
 // Create New User
-export const createUser = (req, res) => {
+const createUser = (req, res) => {
     const data = req.body;
-    insertUser(data, (err, results) => {
+    models.insertUser(data, (err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -94,8 +94,8 @@ export const createUser = (req, res) => {
 }
 
 // Get All Favorites
-export const showFavorites = (req, res) => {
-    getFavorites((err, results) => {
+const showFavorites = (req, res) => {
+    models.getFavorites((err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -105,9 +105,9 @@ export const showFavorites = (req, res) => {
 }
 
 // Create New Favorite
-export const createFavorite = (req, res) => {
+const createFavorite = (req, res) => {
     const data = req.body;
-    insertFavorite(data, (err, results) => {
+    models.insertFavorite(data, (err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -115,3 +115,7 @@ export const createFavorite = (req, res) => {
         }
     });
 }
+
+module.exports = { 
+    showProjects,createProject, showBlockchains, createBlockchain, showCategories, createCategory, showUsers, createUser, showFavorites, createFavorite
+ };
