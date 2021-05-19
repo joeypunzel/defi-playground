@@ -2,7 +2,7 @@
 
 <b> Setup Database </b> 
 
-Setup/import mysql instance: database/setup.sql 
+- Setup/import mysql instance: database/setup.sql 
 
 <b> Setup NodeJS/Express/MySQL Backend</b>
 
