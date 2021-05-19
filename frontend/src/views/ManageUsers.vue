@@ -157,7 +157,7 @@ import axios from "axios";
     methods: {
       async getUsers() {
         try {
-          const response = await axios.get("http://localhost:5000/userList");
+          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/userList");
           this.items = response.data;
         } catch (err) {
           console.log(err);
@@ -193,7 +193,7 @@ import axios from "axios";
       },
       async save () {
         try {
-          await axios.post("http://localhost:5000/userList", {
+          await axios.post("http://flip1.engr.oregonstate.edu:3344/userList", {
             userName: this.editedItem.userName,
             isAdmin: this.editedItem.isAdmin
           });

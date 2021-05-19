@@ -156,7 +156,7 @@ import axios from "axios";
     methods: {
       async getCategories() {
         try {
-          const response = await axios.get("http://localhost:5000/categoryList");
+          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/categoryList");
           this.items = response.data;
         } catch (err) {
           console.log(err);
@@ -192,7 +192,7 @@ import axios from "axios";
       },
       save () {
           try {
-             axios.post("http://localhost:5000/categoryList", {
+             axios.post("http://flip1.engr.oregonstate.edu:3344/categoryList", {
               categoryName: this.editedItem.categoryName
             });
             this.categoryName = "";
