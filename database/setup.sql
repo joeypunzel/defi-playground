@@ -42,21 +42,6 @@ CREATE TABLE blockchains (
 
 commit;
 
---
--- Table structure for table `favorites`
---
-DROP TABLE IF EXISTS favorites;
-
-CREATE TABLE favorites (
-  userFavoriteID int(11) NOT NULL AUTO_INCREMENT,
-  userID int(11),
-  projectID int(11),
-  FOREIGN KEY(userID) REFERENCES users(userID),
-  FOREIGN KEY(projectID) REFERENCES projects(projectID),
-  PRIMARY KEY (userFavoriteID)
-);
-
-commit;
 
 --
 -- Table structure for table `projects`
@@ -79,6 +64,24 @@ CREATE TABLE projects (
 
 
 commit;
+
+
+--
+-- Table structure for table `favorites`
+--
+DROP TABLE IF EXISTS favorites;
+
+CREATE TABLE favorites (
+  userFavoriteID int(11) NOT NULL AUTO_INCREMENT,
+  userID int(11),
+  projectID int(11),
+  FOREIGN KEY(userID) REFERENCES users(userID),
+  FOREIGN KEY(projectID) REFERENCES projects(projectID),
+  PRIMARY KEY (userFavoriteID)
+);
+
+commit;
+
 
 
 -- write your queries to insert data here
