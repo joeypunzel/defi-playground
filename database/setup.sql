@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS=OFF;
 --
 -- Table structure for table `users`
 --
@@ -135,3 +136,5 @@ INSERT INTO favorites(userID, projectID)
 VALUES((SELECT userID from users where userName = "Joey"),
 (SELECT projectID from projects where projectName = "Zapper"));
 commit;
+
+SET FOREIGN_KEY_CHECKS=ON;
