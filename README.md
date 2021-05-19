@@ -10,4 +10,4 @@ Setup/import mysql instance: database/setup.sql
 - Before running backend, update port if necessary (default 5000): backend/index.js
 - run backend: node index.js 
 
-Setup NodeJS/Express/Vue/Vuetify/Axios Frontend 
+<b> Setup NodeJS/Express/Vue/Vuetify/Axios Frontend </b>
