@@ -83,9 +83,9 @@ INSERT INTO blockchains(blockchainName) VALUES ("Polygon");
 INSERT INTO blockchains(blockchainName) VALUES ("Ethereum");
 INSERT INTO blockchains(blockchainName) VALUES ("Binance Smart Chain");
 
-INSERT INTO users(userName) VALUES ("Ryan",1);
-INSERT INTO users(userName) VALUES ("Joey",1);
-INSERT INTO users(userName) VALUES ("Vitalik",1);
+INSERT INTO users(userName,isAdmin) VALUES ("Ryan",1);
+INSERT INTO users(userName,isAdmin) VALUES ("Joey",1);
+INSERT INTO users(userName,isAdmin) VALUES ("Vitalik",1);
 
 INSERT INTO projects(blockchainID, categoryID, projectName, description, inceptionDate, marketCap )
 VALUES((SELECT blockchainID from blockchains where blockchainName = "Ethereum"),
