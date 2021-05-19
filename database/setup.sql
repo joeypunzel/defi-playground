@@ -12,7 +12,7 @@ CREATE TABLE users (
   CONSTRAINT UNIQUE(userName)
 );
 
-
+commit;
 --
 -- Table structure for table `categories`
 --
@@ -26,6 +26,8 @@ CREATE TABLE categories (
   CONSTRAINT UNIQUE(categoryName)
 );
 
+commit;
+
 --
 -- Table structure for table `blockchains`
 --
@@ -37,6 +39,8 @@ CREATE TABLE blockchains (
   PRIMARY KEY (blockchainID),
   CONSTRAINT UNIQUE(blockchainName)
 );
+
+commit;
 
 --
 -- Table structure for table `favorites`
@@ -51,6 +55,8 @@ CREATE TABLE favorites (
   FOREIGN KEY(projectID) REFERENCES projects(projectID),
   PRIMARY KEY (userFavoriteID)
 );
+
+commit;
 
 --
 -- Table structure for table `projects`
@@ -72,20 +78,27 @@ CREATE TABLE projects (
 );
 
 
+commit;
 
 
 -- write your queries to insert data here
 INSERT INTO categories(categoryName) VALUES ("Lending");
 INSERT INTO categories(categoryName) VALUES ("Decentralized exchange");
 INSERT INTO categories(categoryName) VALUES ("Asset Management");
+commit;
+
 
 INSERT INTO blockchains(blockchainName) VALUES ("Polygon");
 INSERT INTO blockchains(blockchainName) VALUES ("Ethereum");
 INSERT INTO blockchains(blockchainName) VALUES ("Binance Smart Chain");
+commit;
+
 
 INSERT INTO users(userName,isAdmin) VALUES ("Ryan",1);
 INSERT INTO users(userName,isAdmin) VALUES ("Joey",1);
 INSERT INTO users(userName,isAdmin) VALUES ("Vitalik",1);
+commit;
+
 
 INSERT INTO projects(blockchainID, categoryID, projectName, description, inceptionDate, marketCap )
 VALUES((SELECT blockchainID from blockchains where blockchainName = "Ethereum"),
@@ -104,6 +117,7 @@ VALUES((SELECT blockchainID from blockchains where blockchainName = "Ethereum"),
 (SELECT categoryID from categories where categoryName = "Asset Management"),
 "Zapper", "Enables users to swap between cryptocurrency assets on a fast/inexpensive alternative to Ethereum",
 "2017", 6845029959);
+commit;
 
 
 INSERT INTO favorites(userID, projectID)
@@ -117,3 +131,4 @@ VALUES((SELECT userID from users where userName = "Ryan"),
 INSERT INTO favorites(userID, projectID)
 VALUES((SELECT userID from users where userName = "Joey"),
 (SELECT projectID from projects where projectName = "Zapper"));
+commit;
