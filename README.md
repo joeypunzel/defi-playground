@@ -8,6 +8,7 @@
 
 - Update config to point to local db: backend/config/database.js 
 - Before running backend, update port if necessary (default 5000): backend/index.js
+- npm install express mysql cors
 - run backend: node index.js 
 
 <b> Setup NodeJS/Express/Vue/Vuetify/Axios Frontend </b>
