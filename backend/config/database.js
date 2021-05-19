@@ -2,7 +2,7 @@ const mysql  = require("mysql");
   
 // create the connection to database
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: 'localhost',  //classmysql.engr.oregonstate.edu
   user: 'cs340_punzelj',
   password: '8436',
   database: 'cs340_punzelj'
