@@ -1,3 +1,17 @@
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+  userID int(11) NOT NULL AUTO_INCREMENT,
+  userName varchar(255) NOT NULL,
+  isAdmin boolean default 0 NOT NULL,
+  PRIMARY KEY (userID),
+  CONSTRAINT UNIQUE(userName)
+);
+
 
 --
 -- Table structure for table `categories`
@@ -25,17 +39,17 @@ CREATE TABLE blockchains (
 );
 
 --
--- Table structure for table `users`
+-- Table structure for table `favorites`
 --
+DROP TABLE IF EXISTS favorites;
 
-DROP TABLE IF EXISTS users;
-
-CREATE TABLE users (
-  userID int(11) NOT NULL AUTO_INCREMENT,
-  userName varchar(255) NOT NULL,
-  isAdmin boolean default 0 NOT NULL,
-  PRIMARY KEY (userID),
-  CONSTRAINT UNIQUE(userName)
+CREATE TABLE favorites (
+  userFavoriteID int(11) NOT NULL AUTO_INCREMENT,
+  userID int(11),
+  projectID int(11),
+  FOREIGN KEY(userID) REFERENCES users(userID),
+  FOREIGN KEY(projectID) REFERENCES projects(projectID),
+  PRIMARY KEY (userFavoriteID)
 );
 
 --
@@ -57,27 +71,7 @@ CREATE TABLE projects (
   PRIMARY KEY (projectID)
 );
 
---
--- Table structure for table `favorites`
---
 
-DROP TABLE IF EXISTS favorites;
-
-CREATE TABLE favorites (
-  userFavoriteID int(11) NOT NULL AUTO_INCREMENT,
-  userID int(11),
-  projectID int(11),
-  FOREIGN KEY(userID) REFERENCES users(userID),
-  FOREIGN KEY(projectID) REFERENCES projects(projectID),
-  PRIMARY KEY (userFavoriteID)
-);
-
--- Test that the tables were created
---DESCRIBE categories;
---DESCRIBE blockchains;
---DESCRIBE users;
---DESCRIBE projects;
---DESCRIBE favorites;
 
 
 -- write your queries to insert data here
