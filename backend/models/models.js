@@ -3,7 +3,7 @@ const db = require("../config/database.js");
  
 // Get All Projects
 const getProjects = (result) => {
-    db.query("select p.projectID,p.projectName,p.marketCap, b.blockchainName,c.categoryName, p.description,p.inceptionDate from projects p left join blockchains b on p.blockchainID = b.blockchainID left join categories c on p.categoryID = c.categoryID;;", (err, results) => {             
+    db.query("select p.projectID,p.projectName,p.marketCap, b.blockchainName,c.categoryName, p.description,p.inceptionDate from projects p left join blockchains b on p.blockchainID = b.blockchainID left join categories c on p.categoryID = c.categoryID;", (err, results) => {             
         if(err) {
             console.log(err);
             result(err, null);
