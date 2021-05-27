@@ -156,7 +156,7 @@ import axios from "axios";
     methods: {
       async getCategories() {
         try {
-          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/categoryList");
+          const response = await axios.get("http://localhost:5000/categoryList"); //http://flip1.engr.oregonstate.edu:3344/categoryList
           this.items = response.data;
         } catch (err) {
           console.log(err);
@@ -189,14 +189,17 @@ import axios from "axios";
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
+
+
+
+
       },
       save () {
           try {
-             axios.post("http://flip1.engr.oregonstate.edu:3344/categoryList", {
+             axios.post("http://localhost:5000/categoryList", {  //http://flip1.engr.oregonstate.edu:3344/categoryList
               categoryName: this.editedItem.categoryName
             });
             this.categoryName = "";
-            //this.$router.push("/");
             this.items.push(this.editedItem)
             this.close()
 

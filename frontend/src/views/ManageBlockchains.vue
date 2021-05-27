@@ -157,7 +157,7 @@ import axios from "axios";
     methods: {
       async getBlockchains() {
         try {
-          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/blockchainList");
+          const response = await axios.get("http://localhost:5000/blockchainList"); //http://flip1.engr.oregonstate.edu:3344/blockchainList
           this.items = response.data;
         } catch (err) {
           console.log(err);
@@ -193,7 +193,7 @@ import axios from "axios";
       },
       save () {
           try {
-             axios.post("hhttp://flip1.engr.oregonstate.edu:3344/blockchainList", {
+             axios.post("http://localhost:5000/blockchainList", { //http://flip1.engr.oregonstate.edu:3344/blockchainList
               blockchainName: this.editedItem.blockchainName
             });
             this.blockchainName = "";

@@ -101,7 +101,7 @@ import axios from "axios";
     methods: {
       async getFavorites() {
         try {
-          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/favoriteList");
+          const response = await axios.get("http://localhost:5000/favoriteList"); //http://flip1.engr.oregonstate.edu:3344/favoriteList
           this.items = response.data;
         } catch (err) {
           console.log(err);

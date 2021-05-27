@@ -224,8 +224,8 @@ import axios from "axios";
     },
     methods: {
       async getProjects() {
-        try {
-          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/projectList");
+        try { 
+          const response = await axios.get("http://localhost:5000/projectList"); //http://flip1.engr.oregonstate.edu:3344/projectList
           this.items = response.data;
         } catch (err) {
           console.log(err);
@@ -244,8 +244,8 @@ import axios from "axios";
         let itemIndex = this.items.indexOf(item);
         console.log(this.items[itemIndex]);
         try {
-          await axios.post("http://flip1.engr.oregonstate.edu:3344/favoriteList", {
-            projectName: this.items[itemIndex].projectName
+          await axios.post("http://localhost:5000/favoriteList", { //http://flip1.engr.oregonstate.edu:3344/favoriteList
+            projectName: this.items[itemIndex].projectName   
           });
           this.projectName = "";
           this.close()

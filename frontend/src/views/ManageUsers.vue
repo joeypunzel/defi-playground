@@ -49,6 +49,16 @@
                       label="User Name"
                     ></v-text-field>
                   </v-col>
+                  <v-col
+                  cols="12"
+                  sm="6"
+                  md="4"
+                >
+                  <v-text-field
+                    v-model="editedItem.isAdmin"
+                    label="IsAdmin?"
+                  ></v-text-field>
+                </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -132,10 +142,12 @@ import axios from "axios";
       items: [],
       editedIndex: -1,
       editedItem: {
-        name: '',
+        userName: '',
+        isAdmin: '',
       },
       defaultItem: {
-        name: '',
+        userName: '',
+        isAdmin: '',
       },
     }),
     computed: {
@@ -157,25 +169,26 @@ import axios from "axios";
     methods: {
       async getUsers() {
         try {
-          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/userList");
+          const response = await axios.get("http://localhost:5000/userList"); //http://flip1.engr.oregonstate.edu:3344/userList
           this.items = response.data;
         } catch (err) {
           console.log(err);
         }
       },
       editItem (item) {
-        this.editedIndex = this.users.indexOf(item)
+        this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
       deleteItem (item) {
-        this.editedIndex = this.users.indexOf(item)
+        this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
       deleteItemConfirm () {
-        this.users.splice(this.editedIndex, 1)
+        this.items.splice(this.editedIndex, 1)
         this.closeDelete()
+        this.deleteSql()
       },
       close () {
         this.dialog = false
@@ -193,7 +206,21 @@ import axios from "axios";
       },
       async save () {
         try {
-          await axios.post("http://flip1.engr.oregonstate.edu:3344/userList", {
+          await axios.post("http://localhost:5000/userList", { //http://flip1.engr.oregonstate.edu:3344/userList
+            userName: this.editedItem.userName,
+            isAdmin: this.editedItem.isAdmin
+          });
+          this.userName = "";
+          this.isAdmin = "";
+          this.items.push(this.editedItem)
+          this.close()
+        } catch (err) {
+          console.log(err);
+        }
+        },
+    async deleteSql () {
+        try {
+          await axios.post("http://localhost:5000/userList", { //http://flip1.engr.oregonstate.edu:3344/userList
             userName: this.editedItem.userName,
             isAdmin: this.editedItem.isAdmin
           });
