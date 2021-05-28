@@ -240,7 +240,7 @@ import axios from "axios";
     methods: {
       async getUsers() {
         try {
-          const response = await axios.get("http://localhost:5000/userList"); //http://flip1.engr.oregonstate.edu:3344/userList
+          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/userList"); //http://flip1.engr.oregonstate.edu:3344/userList
           this.items = response.data;
         } catch (err) {
           console.log(err);
@@ -285,7 +285,7 @@ import axios from "axios";
       },
       async save () {
         try {
-          await axios.post("http://localhost:5000/userList", { //http://flip1.engr.oregonstate.edu:3344/userList
+          await axios.post("http://flip1.engr.oregonstate.edu:3344/userList", { //http://flip1.engr.oregonstate.edu:3344/userList
             userName: this.editedItem.userName,
             isAdmin: this.editedItem.isAdmin
           });
@@ -299,7 +299,7 @@ import axios from "axios";
         },
     async deleteSql () {
         try {
-          await axios.post("http://localhost:5000/deleteUser", { //http://flip1.engr.oregonstate.edu:3344/userList
+          await axios.post("http://flip1.engr.oregonstate.edu:3344/deleteUser", { //http://flip1.engr.oregonstate.edu:3344/userList
             userName: this.editedItem.userName,
             isAdmin: this.editedItem.isAdmin
           });
@@ -309,7 +309,7 @@ import axios from "axios";
         },
     async updateSql () {
         try {
-          await axios.post("http://localhost:5000/updateUser", { //http://flip1.engr.oregonstate.edu:3344/userList
+          await axios.post("http://flip1.engr.oregonstate.edu:3344/updateUser", { //http://flip1.engr.oregonstate.edu:3344/userList
               userName: this.editedItem.userName,
               isAdmin: this.editedItem.isAdmin,
               origUserName: this.origItem.userName
