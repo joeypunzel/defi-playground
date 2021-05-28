@@ -24,6 +24,30 @@ const createProject = (req, res) => {
     });
 }
 
+// Update Project
+const alterProject = (req, res) => {
+    const data = req.body;
+    models.updateProject(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Delete Project
+const deleteProject = (req, res) => {
+    const data = req.body;
+    models.removeProject(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
 // Get All Blockchains
 const showBlockchains = (req, res) => {
     models.getBlockchains((err, results) => {
@@ -39,6 +63,30 @@ const showBlockchains = (req, res) => {
 const createBlockchain = (req, res) => {
     const data = req.body;
     models.insertBlockchain(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Update Blockchain
+const alterBlockchain = (req, res) => {
+    const data = req.body;
+    models.updateBlockchain(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Delete Blockchain
+const deleteBlockchain = (req, res) => {
+    const data = req.body;
+    models.removeBlockchain(data, (err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -70,6 +118,31 @@ const createCategory = (req, res) => {
     });
 }
 
+// Update Category
+const alterCategory = (req, res) => {
+    console.log("test - controller")
+    const data = req.body;
+    models.updateCategory(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Delete Category
+const deleteCategory = (req, res) => {
+    const data = req.body;
+    models.removeCategory(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
 // Get All Users
 const showUsers = (req, res) => {
     models.getUsers((err, results) => {
@@ -85,6 +158,30 @@ const showUsers = (req, res) => {
 const createUser = (req, res) => {
     const data = req.body;
     models.insertUser(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Update User
+const alterUser = (req, res) => {
+    const data = req.body;
+    models.updateUser(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Delete User
+const deleteUser = (req, res) => {
+    const data = req.body;
+    models.removeUser(data, (err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -116,6 +213,18 @@ const createFavorite = (req, res) => {
     });
 }
 
+// Delete Favorite
+const deleteFavorite = (req, res) => {
+    const data = req.body;
+    models.removeFavorite(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
 module.exports = { 
-    showProjects,createProject, showBlockchains, createBlockchain, showCategories, createCategory, showUsers, createUser, showFavorites, createFavorite
+    showProjects,createProject,deleteProject, alterProject, showBlockchains, createBlockchain, alterBlockchain, deleteBlockchain, showCategories, createCategory, alterCategory, deleteCategory, showUsers, createUser, alterUser, deleteUser, showFavorites, createFavorite, deleteFavorite
  };

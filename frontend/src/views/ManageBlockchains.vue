@@ -16,6 +16,52 @@
           vertical
         ></v-divider>
         <v-spacer></v-spacer>
+
+        <v-dialog
+        v-model="dialogUpdate"
+        max-width="500px"
+      >
+        <v-card>
+          <v-card-title>
+            <span class="headline">{{ formTitle }}</span>
+          </v-card-title>
+
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col
+                  cols="12"
+                  sm="6"
+                  md="4"
+                >
+                  <v-text-field
+                    v-model="editedItem.blockchainName"
+                    label="Blockchain Name"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="close"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="updateSql"
+            >
+              Update
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
         <v-dialog
           v-model="dialog"
           max-width="500px"
@@ -131,10 +177,10 @@ import axios from "axios";
       items: [],
       editedIndex: -1,
       editedItem: {
-        name: '',
+        blockchainName: '',
       },
       defaultItem: {
-        name: '',
+        blockchainName: '',
       },
     }),
     computed: {
@@ -145,6 +191,9 @@ import axios from "axios";
     watch: {
       dialog (val) {
         val || this.close()
+      },
+      dialogUpdate (val) {
+        val || this.closeUpdate()
       },
       dialogDelete (val) {
         val || this.closeDelete()
@@ -165,8 +214,9 @@ import axios from "axios";
       },
       editItem (item) {
         this.editedIndex = this.items.indexOf(item)
+        this.origItem = Object.assign({}, item)
         this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        this.dialogUpdate = true
       },
       deleteItem (item) {
         this.editedIndex = this.items.indexOf(item)
@@ -175,6 +225,7 @@ import axios from "axios";
       },
       deleteItemConfirm () {
         this.items.splice(this.editedIndex, 1)
+        this.deleteSql()
         this.closeDelete()
       },
       close () {
@@ -186,6 +237,13 @@ import axios from "axios";
       },
       closeDelete () {
         this.dialogDelete = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+      closeUpdate () {
+        this.dialogUpdate = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
@@ -205,6 +263,29 @@ import axios from "axios";
             console.log(err);
           }
           },
+      async deleteSql () {
+        try {
+          await axios.post("http://localhost:5000/deleteBlockchain", { //http://flip1.engr.oregonstate.edu:3344/userList
+            blockchainName: this.editedItem.blockchainName
+          });
+        } catch (err) {
+          console.log(err);
+        }
+        },
+      async updateSql () {
+        try {
+          await axios.post("http://localhost:5000/updateBlockchain", { //http://flip1.engr.oregonstate.edu:3344/userList
+              blockchainName: this.editedItem.blockchainName,
+              origBlockchainName: this.origItem.blockchainName
+              });
+              this.blockchainName = "";
+              //this.$router.push("/ManageBlockchains");
+              this.items.push(this.editedItem)
+              this.closeUpdate()
+            } catch (err) {
+              console.log(err);
+        }
+        },
     },
   }
 </script>

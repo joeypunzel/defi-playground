@@ -2,7 +2,7 @@
   <v-data-table
     :headers="headers"
     :items="items"
-    sort-by="marketCap"
+    sort-by="projectName"
     class="elevation-1"
   >
     <template v-slot:top>
@@ -37,6 +37,7 @@
   
       <v-icon
         small
+        class="mb-2"
         @click="deleteItem(item)"
       >
         mdi-delete
@@ -76,6 +77,10 @@ import axios from "axios";
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       items: [],
+      editedIndex: -1,
+      editedItem: {
+        projectName: '',
+      },
       defaultItem: {
         projectName: '',
         marketCap: 0,
@@ -86,6 +91,9 @@ import axios from "axios";
       },
     }),
     computed: {
+      formTitle () {
+        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      },
     },
     watch: {
       dialog (val) {
@@ -107,13 +115,19 @@ import axios from "axios";
           console.log(err);
         }
       },
+      editItem (item) {
+        this.editedIndex = this.items.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+      },
       deleteItem (item) {
-        this.editedIndex = this.favorites.indexOf(item)
+        this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
       deleteItemConfirm () {
-        this.favorites.splice(this.editedIndex, 1)
+        this.items.splice(this.editedIndex, 1)
+        this.deleteSql()
         this.closeDelete()
       },
       close () {
@@ -138,6 +152,15 @@ import axios from "axios";
         }
         this.close()
       },
+      async deleteSql () {
+        try {
+          await axios.post("http://localhost:5000/deleteFavorite", { //http://flip1.engr.oregonstate.edu:3344/userList
+            projectName: this.editedItem.projectName
+          });
+        } catch (err) {
+          console.log(err);
+        }
+        },
     },
   }
 </script>

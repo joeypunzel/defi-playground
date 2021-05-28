@@ -26,9 +26,52 @@ const insertProject = (data, result) => {
     });   
 }
 
+// Update Project
+const updateProject = (data, result) => {
+    let cond = [data.projectName, data.marketCap, data.blockchainName, data.categoryName, data.description, data.inceptionDate, data.origProjectName]
+    db.query("UPDATE projects SET projectName = ?, marketCap = ?,blockchainID=(select blockchainID from blockchains where blockchainName = ?),categoryID=(select categoryID from categories where categoryName = ?),description = ?, inceptionDate = ? where projectName = ?",cond, (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });   
+}
+
+// Delete Project
+const removeProject = (data, result) => {
+    let cond = [data.projectName]
+    db.query("DELETE FROM favorites where projectID in (select projectID from projects where projectName = ?)", cond , (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } 
+    });
+    db.query("DELETE FROM projects where projectName = ?", cond , (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } 
+    });     
+}
+
 // Get All Blockchains
 const getBlockchains = (result) => {
     db.query("select blockchainName from blockchains", (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });   
+}
+
+// Update Blockchain
+const updateBlockchain = (data, result) => {
+    let cond = [data.blockchainName, data.origBlockchainName]
+    db.query("UPDATE blockchains SET blockchainName = ? where blockchainName = ?",cond, (err, results) => {             
         if(err) {
             console.log(err);
             result(err, null);
@@ -47,6 +90,29 @@ const insertBlockchain = (data, result) => {
         } else {
             result(null, results);
         }
+    });   
+}
+
+// Delete Blockchain
+const removeBlockchain = (data, result) => {
+    let cond = [data.blockchainName]
+    db.query("DELETE FROM favorites where projectID in (select projectID from projects where blockchainID = (select blockchainID from blockchains where blockchainName = ?))", cond , (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } 
+    });
+    db.query("DELETE FROM projects where blockchainID = (select blockchainID from blockchains where blockchainName = ?)", cond , (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } 
+    });   
+    db.query("DELETE FROM blockchains where blockchainName = ?", cond , (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } 
     });   
 }
 
@@ -74,6 +140,43 @@ const insertCategory = (data, result) => {
     });   
 }
 
+// Update Category
+const updateCategory = (data, result) => {
+    let cond = [data.categoryName, data.origCategoryName]
+    console.log(cond)
+    db.query("UPDATE categories SET categoryName = ? where categoryName = ?",cond, (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });   
+}
+
+// Delete Category
+const removeCategory = (data, result) => {
+    let cond = [data.categoryName]
+    db.query("DELETE FROM favorites where projectID in (select projectID from projects where categoryID = (select categoryID from categories where categoryName = ?))", cond , (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } 
+    }); 
+    db.query("DELETE FROM projects where categoryID = (select categoryID from categories where categoryName = ?)", cond , (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } 
+    }); 
+    db.query("DELETE FROM categories where categoryName = ?", cond , (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } 
+    });
+}
+
 // Get All Users
 const getUsers = (result) => {
     db.query("select userName,isAdmin from users", (err, results) => {             
@@ -89,6 +192,32 @@ const getUsers = (result) => {
 // Insert User
 const insertUser = (data, result) => {
     db.query("INSERT INTO users SET ?", [data], (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });   
+}
+
+// Update User
+const updateUser = (data, result) => {
+    let cond = [data.userName, data.isAdmin, data.origUserName]
+    db.query("UPDATE users SET userName = ?, isAdmin = ? where userName = ?",cond, (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });   
+}
+
+// Delete User
+const removeUser = (data, result) => {
+    let cond = [data.userName, data.isAdmin]
+    db.query("DELETE FROM users where userName = ?", cond , (err, results) => {             
         if(err) {
             console.log(err);
             result(err, null);
@@ -123,6 +252,19 @@ const insertFavorite = (data,result) => {
     });   
 }
 
+// Delete Favorite
+const removeFavorite = (data, result) => {
+    let cond = [data.projectName]
+    db.query("DELETE FROM favorites where projectID in(select projectID from projects where projectName = ?)", cond , (err, results) => {             
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });   
+}
+
 module.exports = {
-    getProjects,insertProject, getBlockchains, insertBlockchain, getCategories, insertCategory, getUsers, insertUser, insertFavorite, getFavorites  
+    getProjects,insertProject,removeProject,updateProject, getBlockchains, insertBlockchain, updateBlockchain, removeBlockchain, getCategories, insertCategory, updateCategory, removeCategory, getUsers, insertUser, updateUser, removeUser, insertFavorite, getFavorites, removeFavorite  
 };

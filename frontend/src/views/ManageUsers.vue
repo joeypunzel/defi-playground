@@ -16,6 +16,73 @@
           vertical
         ></v-divider>
         <v-spacer></v-spacer>
+
+        <v-divider
+        class="mx-4"
+        inset
+        vertical
+      ></v-divider>
+      <v-spacer></v-spacer>
+      <v-dialog
+        v-model="dialogUpdate"
+        max-width="500px"
+      >
+
+        <v-card>
+          <v-card-title>
+            <span class="headline">{{ formTitle }}</span>
+          </v-card-title>
+
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col
+                  cols="12"
+                  sm="6"
+                  md="4"
+                >
+                  <v-text-field
+                    v-model="editedItem.userName"
+                    label="User Name"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                cols="12"
+                sm="6"
+                md="4"
+              >
+                <v-text-field
+                  v-model="editedItem.isAdmin"
+                  label="IsAdmin?"
+                ></v-text-field>
+              </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="close"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="updateSql"
+            >
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+
+
+
         <v-dialog
           v-model="dialog"
           max-width="500px"
@@ -129,6 +196,7 @@ import axios from "axios";
     data: () => ({
       dialog: false,
       dialogDelete: false,
+      dialogUpdate: false,
       headers: [
         {
           text: 'Username',
@@ -159,6 +227,9 @@ import axios from "axios";
       dialog (val) {
         val || this.close()
       },
+      dialogUpdate (val) {
+        val || this.closeUpdate()
+      },
       dialogDelete (val) {
         val || this.closeDelete()
       },
@@ -177,8 +248,9 @@ import axios from "axios";
       },
       editItem (item) {
         this.editedIndex = this.items.indexOf(item)
+        this.origItem = Object.assign({}, item)
         this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        this.dialogUpdate = true
       },
       deleteItem (item) {
         this.editedIndex = this.items.indexOf(item)
@@ -187,8 +259,8 @@ import axios from "axios";
       },
       deleteItemConfirm () {
         this.items.splice(this.editedIndex, 1)
-        this.closeDelete()
         this.deleteSql()
+        this.closeDelete()
       },
       close () {
         this.dialog = false
@@ -199,6 +271,13 @@ import axios from "axios";
       },
       closeDelete () {
         this.dialogDelete = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+      closeUpdate () {
+        this.dialogUpdate = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
@@ -220,16 +299,28 @@ import axios from "axios";
         },
     async deleteSql () {
         try {
-          await axios.post("http://localhost:5000/userList", { //http://flip1.engr.oregonstate.edu:3344/userList
+          await axios.post("http://localhost:5000/deleteUser", { //http://flip1.engr.oregonstate.edu:3344/userList
             userName: this.editedItem.userName,
             isAdmin: this.editedItem.isAdmin
           });
-          this.userName = "";
-          this.isAdmin = "";
-          this.items.push(this.editedItem)
-          this.close()
         } catch (err) {
           console.log(err);
+        }
+        },
+    async updateSql () {
+        try {
+          await axios.post("http://localhost:5000/updateUser", { //http://flip1.engr.oregonstate.edu:3344/userList
+              userName: this.editedItem.userName,
+              isAdmin: this.editedItem.isAdmin,
+              origUserName: this.origItem.userName
+              });
+            this.userName = "";
+            this.isAdmin = "";
+            //this.$router.push("/");
+            this.items.push(this.editedItem)
+            this.closeUpdate()
+          } catch (err) {
+              console.log(err);
         }
         },
     },
