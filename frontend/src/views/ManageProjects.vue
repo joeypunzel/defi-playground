@@ -354,7 +354,7 @@ import axios from "axios";
     methods: {
       async getProjects() {
         try {
-          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/projectList"); //http://flip1.engr.oregonstate.edu:3344/projectList
+          const response = await axios.get("http://localhost:3344/projectList"); //http://localhost:3344/projectList
           this.items = response.data;
         } catch (err) {
           console.log(err);
@@ -362,7 +362,7 @@ import axios from "axios";
       },
       async getBlockchains() {
         try {
-          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/blockchainList"); //http://flip1.engr.oregonstate.edu:3344/blockchainList
+          const response = await axios.get("http://localhost:3344/blockchainList"); //http://localhost:3344/blockchainList
           this.blockchain_items = response.data;
         } catch (err) {
           console.log(err);
@@ -370,7 +370,7 @@ import axios from "axios";
       },
       async getCategories() {
         try {
-          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/categoryList"); //http://flip1.engr.oregonstate.edu:3344/categoryList
+          const response = await axios.get("http://localhost:3344/categoryList"); //http://localhost:3344/categoryList
           this.category_items = response.data;
         } catch (err) {
           console.log(err);
@@ -416,7 +416,7 @@ import axios from "axios";
       async save () {
 
             try {
-              await axios.post("http://flip1.engr.oregonstate.edu:3344/projectList", { //http://flip1.engr.oregonstate.edu:3344/projectList
+              await axios.post("http://localhost:3344/projectList", { //http://flip1.engr.oregonstate.edu:3344
                 projectName: this.editedItem.projectName,
                 marketCap: this.editedItem.marketCap,
                 blockchainName: this.editedItem.blockchainName,
@@ -439,7 +439,7 @@ import axios from "axios";
       },
       async deleteSql () {
         try {
-          await axios.post("http://flip1.engr.oregonstate.edu:3344/deleteProject", { //http://flip1.engr.oregonstate.edu:3344/userList
+          await axios.post("http://localhost:3344/deleteProject", { //http://localhost:3344/userList
             projectName: this.editedItem.projectName
           });
         } catch (err) {
@@ -447,8 +447,9 @@ import axios from "axios";
         }
         },
       async updateSql () {
+        this.items.splice(this.editedIndex, 1)
         try {
-          await axios.post("http://flip1.engr.oregonstate.edu:3344/updateProject", { //http://flip1.engr.oregonstate.edu:3344/userList
+          await axios.post("http://localhost:3344/updateProject", { //http://localhost:3344/userList
                 origProjectName: this.origItem.projectName,
                 projectName: this.editedItem.projectName,
                 marketCap: this.editedItem.marketCap,

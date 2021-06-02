@@ -207,7 +207,7 @@ import axios from "axios";
     methods: {
       async getCategories() {
         try {
-          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/categoryList"); //http://flip1.engr.oregonstate.edu:3344/categoryList
+          const response = await axios.get("http://localhost:3344/categoryList"); //http://flip1.engr.oregonstate.edu:3344
           this.items = response.data;
         } catch (err) {
           console.log(err);
@@ -252,7 +252,7 @@ import axios from "axios";
       },
       save () {
           try {
-             axios.post("http://flip1.engr.oregonstate.edu:3344/categoryList", {  //http://flip1.engr.oregonstate.edu:3344/categoryList  http://localhost:5000
+             axios.post("http://localhost:3344/categoryList", {  //http://localhost:3344/categoryList  http://localhost:5000
               categoryName: this.editedItem.categoryName
             });
             this.categoryName = "";
@@ -265,7 +265,7 @@ import axios from "axios";
           },
       async deleteSql () {
         try {
-          await axios.post("http://flip1.engr.oregonstate.edu:3344/deleteCategory", { //http://flip1.engr.oregonstate.edu:3344/userList
+          await axios.post("http://localhost:3344/deleteCategory", { //http://localhost:3344/userList
             categoryName: this.editedItem.categoryName
           });
         } catch (err) {
@@ -273,8 +273,9 @@ import axios from "axios";
         }
         },
       async updateSql () {
+        this.items.splice(this.editedIndex, 1)
         try {
-          await axios.post("http://flip1.engr.oregonstate.edu:3344/updateCategory", { //http://flip1.engr.oregonstate.edu:3344/userList
+          await axios.post("http://localhost:3344/updateCategory", { //http://localhost:3344/userList
                 categoryName: this.editedItem.categoryName,
                 origCategoryName: this.origItem.categoryName
               });

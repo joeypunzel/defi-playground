@@ -1,4 +1,5 @@
 <template>
+
   <v-data-table
     :headers="headers"
     :items="items"
@@ -33,6 +34,7 @@
             <span class="headline">{{ formTitle }}</span>
           </v-card-title>
 
+
           <v-card-text>
             <v-container>
               <v-row>
@@ -44,7 +46,10 @@
                   <v-text-field
                     v-model="editedItem.userName"
                     label="User Name"
+                    :counter="10"
+                    required
                   ></v-text-field>
+
                 </v-col>
                 <v-col
                 cols="12"
@@ -54,6 +59,7 @@
                 <v-text-field
                   v-model="editedItem.isAdmin"
                   label="IsAdmin?"
+                  required
                 ></v-text-field>
               </v-col>
               </v-row>
@@ -74,11 +80,12 @@
               text
               @click="updateSql"
             >
-              Save
+              Update
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
+
 
 
 
@@ -161,6 +168,7 @@
           </v-card>
         </v-dialog>
       </v-toolbar>
+
     </template>
     <template v-slot:item.actions="{ item }">
       <v-icon
@@ -240,7 +248,7 @@ import axios from "axios";
     methods: {
       async getUsers() {
         try {
-          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/userList"); //http://flip1.engr.oregonstate.edu:3344/userList
+          const response = await axios.get("http://localhost:3344/userList"); //http://flip1.engr.oregonstate.edu:3344
           this.items = response.data;
         } catch (err) {
           console.log(err);
@@ -278,14 +286,14 @@ import axios from "axios";
       },
       closeUpdate () {
         this.dialogUpdate = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
+     //   this.$nextTick(() => {
+    //    this.editedItem = Object.assign({}, this.defaultItem)
+    //      this.editedIndex = -1
+        
       },
       async save () {
         try {
-          await axios.post("http://flip1.engr.oregonstate.edu:3344/userList", { //http://flip1.engr.oregonstate.edu:3344/userList
+          await axios.post("http://localhost:3344/userList", { //http://localhost:3344/userList
             userName: this.editedItem.userName,
             isAdmin: this.editedItem.isAdmin
           });
@@ -299,7 +307,7 @@ import axios from "axios";
         },
     async deleteSql () {
         try {
-          await axios.post("http://flip1.engr.oregonstate.edu:3344/deleteUser", { //http://flip1.engr.oregonstate.edu:3344/userList
+          await axios.post("http://localhost:3344/deleteUser", { //http://localhost:3344/userList
             userName: this.editedItem.userName,
             isAdmin: this.editedItem.isAdmin
           });
@@ -308,15 +316,15 @@ import axios from "axios";
         }
         },
     async updateSql () {
+        this.items.splice(this.editedIndex, 1)
         try {
-          await axios.post("http://flip1.engr.oregonstate.edu:3344/updateUser", { //http://flip1.engr.oregonstate.edu:3344/userList
+          await axios.post("http://localhost:3344/updateUser", { //http://localhost:3344/userList
               userName: this.editedItem.userName,
               isAdmin: this.editedItem.isAdmin,
               origUserName: this.origItem.userName
               });
             this.userName = "";
             this.isAdmin = "";
-            //this.$router.push("/");
             this.items.push(this.editedItem)
             this.closeUpdate()
           } catch (err) {
