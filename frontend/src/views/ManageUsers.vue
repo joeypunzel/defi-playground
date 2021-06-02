@@ -33,6 +33,11 @@
           <v-card-title>
             <span class="headline">{{ formTitle }}</span>
           </v-card-title>
+          <validation-observer
+          ref="observer"
+          v-slot="{ invalid }"
+        >
+          <form @submit.prevent="submit">
 
 
           <v-card-text>
@@ -43,12 +48,20 @@
                   sm="6"
                   md="4"
                 >
+                <validation-provider
+                v-slot="{ errors }"
+                name="User Name"
+                rules="required|max:10"
+              >
+
                   <v-text-field
                     v-model="editedItem.userName"
                     label="User Name"
                     :counter="10"
+                    :error-messages="errors"
                     required
                   ></v-text-field>
+                </validation-provider>
 
                 </v-col>
                 <v-col
@@ -56,11 +69,23 @@
                 sm="6"
                 md="4"
               >
+              <validation-provider
+              v-slot="{ errors }"
+              name="IsAdmin?"
+              :rules="{
+                required: true,
+                digits: 1,
+                regex: '^(0|1)'
+              }"
+            >
                 <v-text-field
                   v-model="editedItem.isAdmin"
                   label="IsAdmin?"
+                  :counter="1"
+                  :error-messages="errors"
                   required
                 ></v-text-field>
+              </validation-provider>
               </v-col>
               </v-row>
             </v-container>
@@ -79,10 +104,15 @@
               color="blue darken-1"
               text
               @click="updateSql"
+              class="mr-4"
+              type="submit"
+              :disabled="invalid"
             >
               Update
             </v-btn>
           </v-card-actions>
+        </form>
+      </validation-observer>
         </v-card>
       </v-dialog>
 
@@ -197,10 +227,33 @@
 </template>
 
 <script>
-// import axios
 import axios from "axios";
+import { required, max, regex } from 'vee-validate/dist/rules'
+import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+
+  setInteractionMode('eager')
+
+  extend('required', {
+    ...required,
+    message: '{_field_} can not be empty',
+  })
+
+  extend('max', {
+    ...max,
+    message: '{_field_} may not be greater than {length} characters',
+  })
+
+  extend('regex', {
+    ...regex,
+    message: 'Only 0 (Admin) and 1 (NonAdmin)',
+  })
+
 
   export default {
+    components: {
+      ValidationProvider,
+      ValidationObserver,
+    },
     data: () => ({
       dialog: false,
       dialogDelete: false,
@@ -305,32 +358,44 @@ import axios from "axios";
           console.log(err);
         }
         },
-    async deleteSql () {
-        try {
-          await axios.post("http://localhost:3344/deleteUser", { //http://localhost:3344/userList
-            userName: this.editedItem.userName,
-            isAdmin: this.editedItem.isAdmin
-          });
-        } catch (err) {
-          console.log(err);
-        }
-        },
-    async updateSql () {
-        this.items.splice(this.editedIndex, 1)
-        try {
-          await axios.post("http://localhost:3344/updateUser", { //http://localhost:3344/userList
+      async deleteSql () {
+          try {
+            await axios.post("http://localhost:3344/deleteUser", { //http://localhost:3344/userList
               userName: this.editedItem.userName,
-              isAdmin: this.editedItem.isAdmin,
-              origUserName: this.origItem.userName
-              });
-            this.userName = "";
-            this.isAdmin = "";
-            this.items.push(this.editedItem)
-            this.closeUpdate()
+              isAdmin: this.editedItem.isAdmin
+            });
           } catch (err) {
-              console.log(err);
-        }
-        },
+            console.log(err);
+          }
+          },
+      async updateSql () {
+          this.items.splice(this.editedIndex, 1)
+          try {
+            await axios.post("http://localhost:3344/updateUser", { //http://localhost:3344/userList
+                userName: this.editedItem.userName,
+                isAdmin: this.editedItem.isAdmin,
+                origUserName: this.origItem.userName
+                });
+              this.userName = "";
+              this.isAdmin = "";
+              this.items.push(this.editedItem)
+              this.closeUpdate()
+            } catch (err) {
+                console.log(err);
+          }
+          },
+      submit () {
+        this.$refs.observer.validate()
+      },
+      clear () {
+        this.name = ''
+        this.phoneNumber = ''
+        this.email = ''
+        this.select = null
+        this.checkbox = null
+        this.$refs.observer.reset()
+      },
     },
+
   }
 </script>
