@@ -21,10 +21,17 @@
         max-width="500px"
       >
 
+
         <v-card>
           <v-card-title>
             <span class="headline">{{ formTitle }}</span>
           </v-card-title>
+
+          <validation-observer
+          ref="observer"
+          v-slot="{ invalid }"
+        >
+          <form @submit.prevent="submit">
 
           <v-card-text>
             <v-container>
@@ -32,12 +39,21 @@
                 <v-col
                   cols="12"
                   sm="6"
-                  md="4"
+                  md="400"
                 >
+                <validation-provider
+                v-slot="{ errors }"
+                name="Catagory Name"
+                rules="required|max:25"
+              >
                   <v-text-field
                     v-model="editedItem.categoryName"
                     label="Catagory Name"
+                    :counter="25"
+                    :error-messages="errors"
+                    required
                   ></v-text-field>
+                </validation-provider>
                 </v-col>
               </v-row>
             </v-container>
@@ -56,10 +72,15 @@
               color="blue darken-1"
               text
               @click="updateSql"
+              class="mr-4"
+              type="submit"
+              :disabled="invalid"
             >
               Update
             </v-btn>
           </v-card-actions>
+        </form>
+      </validation-observer>
         </v-card>
       </v-dialog>
 
@@ -89,7 +110,7 @@
                   <v-col
                     cols="12"
                     sm="6"
-                    md="4"
+                    md="400"
                   >
                     <v-text-field
                       v-model="editedItem.categoryName"
@@ -161,7 +182,26 @@
 <script>
 // import axios
 import axios from "axios";
+import { required, max } from 'vee-validate/dist/rules'
+import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+
+  setInteractionMode('eager')
+
+  extend('required', {
+    ...required,
+    message: '{_field_} can not be empty',
+  })
+
+  extend('max', {
+    ...max,
+    message: '{_field_} may not be greater than {length} characters',
+  })
+
   export default {
+    components: {
+      ValidationProvider,
+      ValidationObserver,
+    },
     data: () => ({
       dialog: false,
       dialogDelete: false,
@@ -286,6 +326,17 @@ import axios from "axios";
               console.log(err);
         }
         },
+      submit () {
+        this.$refs.observer.validate()
+      },
+      clear () {
+        this.name = ''
+        this.phoneNumber = ''
+        this.email = ''
+        this.select = null
+        this.checkbox = null
+        this.$refs.observer.reset()
+      },
     },
   }
 </script>
