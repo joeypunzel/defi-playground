@@ -103,7 +103,7 @@
             >
             <validation-provider
             v-slot="{ errors }"
-            name="blockchainName"
+            name="categoryName"
             rules="required"
           >
               <v-select
@@ -137,26 +137,30 @@
                 </validation-provider>
 
                 </v-col>
+
+                <v-col
+                class="d-flex"
+                cols="12"
+                sm="6"
+              >
               <validation-provider
               v-slot="{ errors }"
-              name="marketCap"
-              rules="required|numeric|max:4"
+              name="Creation Year"
+              rules="required"
             >
-                <v-col
-                  cols="24"
-                  sm="12"
-                  md="400"
-                >
-                <v-text-field
+         
+            
+                <v-select
                 v-model="editedItem.inceptionDate"
-                label="Creation Year (YYYY)"
-                :counter="4"
+                :items="yearbank"
+                label="Creation Year"
                 :error-messages="errors"
+                data-vv-name="Creation Year"
                 required
-              ></v-text-field>
+              >
+            </v-select>
+          </validation-provider>
                 </v-col>
-              </validation-provider>
-
               </v-row>
             </v-container>
           </v-card-text>
@@ -166,7 +170,7 @@
             <v-btn
               color="blue darken-1"
               text
-              @click="close"
+              @click="clear"
             >
               Cancel
             </v-btn>
@@ -319,25 +323,27 @@
                   </validation-provider>
 
                   </v-col>
+                  <v-col
+                  class="d-flex"
+                  cols="12"
+                  sm="6"
+                >
                 <validation-provider
                 v-slot="{ errors }"
-                name="Creation Year (YYYY)"
-                rules="required|numeric|max:4"
+                name="Creation Year"
+                rules="required"
               >
-                  <v-col
-                    cols="24"
-                    sm="12"
-                    md="400"
-                  >
-                  <v-text-field
+                  <v-select
                   v-model="editedItem.inceptionDate"
-                  label="Creation Year (YYYY)"
-                  :counter="4"
+                  :items="yearbank"
+                  label="Creation Year"
                   :error-messages="errors"
+                  data-vv-name="Creation Year"
                   required
-                ></v-text-field>
+                >
+              </v-select>
+            </validation-provider>
                   </v-col>
-                </validation-provider>
 
                 </v-row>
               </v-container>
@@ -348,7 +354,7 @@
               <v-btn
                 color="blue darken-1"
                 text
-                @click="close"
+                @click="clear"
               >
                 Cancel
               </v-btn>
@@ -410,7 +416,7 @@
 <script>
 // import axios
 import axios from "axios";
-import { required, max, numeric } from 'vee-validate/dist/rules'
+import { required, max, numeric, regex } from 'vee-validate/dist/rules'
 import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
 
   setInteractionMode('eager')
@@ -418,6 +424,11 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
   extend('required', {
     ...required,
     message: '{_field_} can not be empty',
+  })
+
+  extend('regex', {
+    ...regex,
+    message: 'CurrentYear needs to be in format YYYY',
   })
 
   extend('max', {
@@ -454,6 +465,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       items: [],
+      yearbank: ['2017','2018','2019','2020','2021'], 
       blockchain_items: [],
       category_items: [],
       editedIndex: -1,
@@ -627,6 +639,8 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
         this.description = "";
         this.inceptionDate = "";
         this.$refs.observer.reset()
+        this.dialog = false
+        this.dialogUpdate = false
       },
     },
   }

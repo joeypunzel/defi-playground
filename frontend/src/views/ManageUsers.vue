@@ -68,11 +68,20 @@
                 cols="12"
                 sm="6"
               >
-                <v-select
-                  v-model="editedItem.isAdmin"
-                  :items="truefalse"
-                  label="Is Admin?"
-                ></v-select>
+              <validation-provider
+              v-slot="{ errors }"
+              name="IsAdmin"
+              rules="required"
+            >
+            <v-select
+            v-model="editedItem.isAdmin"
+            :items="truefalse"
+            label="IsAdmin"
+            :error-messages="errors"
+            required
+            data-vv-name="IsAdmin"
+          ></v-select>
+              </validation-provider>
               </v-col>
               </v-row>
             </v-container>
@@ -83,7 +92,7 @@
             <v-btn
               color="blue darken-1"
               text
-              @click="close"
+              @click="clear"
             >
               Cancel
             </v-btn>
@@ -126,6 +135,13 @@
             <v-card-title>
               <span class="headline">{{ formTitle }}</span>
             </v-card-title>
+
+            <validation-observer
+            ref="observer"
+            v-slot="{ invalid }"
+          >
+            <form @submit.prevent="submit">
+
             <v-card-text>
               <v-container>
                 <v-row>
@@ -148,17 +164,26 @@
                   ></v-text-field>
                 </validation-provider>
                 </v-col>
-                  <v-col
-                  class="d-flex"
-                  cols="12"
-                  sm="6"
-                >
-                  <v-select
-                    v-model="editedItem.isAdmin"
-                    :items="truefalse"
-                    label="Is Admin?"
-                  ></v-select>
-                </v-col>
+                <v-col
+                class="d-flex"
+                cols="12"
+                sm="6"
+              >
+              <validation-provider
+              v-slot="{ errors }"
+              name="IsAdmin"
+              rules="required"
+            >
+                <v-select
+                  v-model="editedItem.isAdmin"
+                  :items="truefalse"
+                  label="IsAdmin"
+                  :error-messages="errors"
+                  required
+                  data-vv-name="IsAdmin"
+                ></v-select>
+              </validation-provider>
+              </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -168,7 +193,7 @@
               <v-btn
                 color="blue darken-1"
                 text
-                @click="close"
+                @click="clear"
               >
                 Cancel
               </v-btn>
@@ -176,11 +201,15 @@
                 color="blue darken-1"
                 text
                 @click="save"
+                class="mr-4"
+                type="submit"
+                :disabled="invalid"
               >
                 Save
               </v-btn>
             </v-card-actions>
-
+          </form>
+        </validation-observer>
           </v-card>
         </v-dialog>
 
@@ -411,12 +440,12 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode, val
         this.$refs.observer.validate()
       },
       clear () {
-        this.name = ''
-        this.phoneNumber = ''
-        this.email = ''
-        this.select = null
-        this.checkbox = null
+        this.userName = "";
+        this.isAdmin = "";
         this.$refs.observer.reset()
+        this.dialog = false
+        this.dialogUpdate = false
+
       },
     },
 
