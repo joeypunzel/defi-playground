@@ -78,7 +78,8 @@ CREATE TABLE favorites (
   projectID int(11),
   FOREIGN KEY(userID) REFERENCES users(userID),
   FOREIGN KEY(projectID) REFERENCES projects(projectID),
-  PRIMARY KEY (userFavoriteID)
+  PRIMARY KEY (userFavoriteID),
+  UNIQUE (projectID)
 );
 
 commit;
