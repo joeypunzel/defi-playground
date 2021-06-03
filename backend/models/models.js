@@ -203,15 +203,15 @@ const insertUser = (data, result) => {
 
 // Update User
 const updateUser = (data, result) => {
-    let cond = [data.userName, data.isAdmin, data.origUserName]
-    db.query("UPDATE users SET userName = ?, isAdmin = ? where userName = ?",cond, (err, results) => {             
-        if(err) {
-            console.log(err);
-            result(err, null);
-        } else {
-            result(null, results);
-        }
-    });   
+        let cond = [data.userName, data.isAdmin, data.origUserName]
+        db.query("UPDATE users SET userName = ?, isAdmin = ? where userName = ?",cond, (err, results) => {             
+            if(err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results);
+            }
+        });  
 }
 
 // Delete User

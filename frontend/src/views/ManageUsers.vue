@@ -46,7 +46,7 @@
                 <v-col
                   cols="12"
                   sm="6"
-                  md="4"
+                  md="40"
                 >
                 <validation-provider
                 v-slot="{ errors }"
@@ -62,30 +62,17 @@
                     required
                   ></v-text-field>
                 </validation-provider>
-
                 </v-col>
                 <v-col
+                class="d-flex"
                 cols="12"
                 sm="6"
-                md="4"
               >
-              <validation-provider
-              v-slot="{ errors }"
-              name="IsAdmin?"
-              :rules="{
-                required: true,
-                digits: 1,
-                regex: '^(0|1)'
-              }"
-            >
-                <v-text-field
+                <v-select
                   v-model="editedItem.isAdmin"
-                  label="IsAdmin?"
-                  :counter="1"
-                  :error-messages="errors"
-                  required
-                ></v-text-field>
-              </validation-provider>
+                  :items="truefalse"
+                  label="Is Admin?"
+                ></v-select>
               </v-col>
               </v-row>
             </v-container>
@@ -139,29 +126,38 @@
             <v-card-title>
               <span class="headline">{{ formTitle }}</span>
             </v-card-title>
-
             <v-card-text>
               <v-container>
                 <v-row>
                   <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.userName"
-                      label="User Name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
                   cols="12"
                   sm="6"
-                  md="4"
+                  md="40"
                 >
+                <validation-provider
+                v-slot="{ errors }"
+                name="User Name"
+                rules="required|max:10"
+              >
                   <v-text-field
-                    v-model="editedItem.isAdmin"
-                    label="IsAdmin?"
+                    v-model="editedItem.userName"
+                    label="User Name"
+                    :counter="10"
+                    :error-messages="errors"
+                    required
                   ></v-text-field>
+                </validation-provider>
+                </v-col>
+                  <v-col
+                  class="d-flex"
+                  cols="12"
+                  sm="6"
+                >
+                  <v-select
+                    v-model="editedItem.isAdmin"
+                    :items="truefalse"
+                    label="Is Admin?"
+                  ></v-select>
                 </v-col>
                 </v-row>
               </v-container>
@@ -184,8 +180,10 @@
                 Save
               </v-btn>
             </v-card-actions>
+
           </v-card>
         </v-dialog>
+
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="headline">Are you sure you want to delete this user?</v-card-title>
@@ -228,10 +226,15 @@
 
 <script>
 import axios from "axios";
-import { required, max, regex } from 'vee-validate/dist/rules'
-import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+import { required, digits, max, min, regex, numeric } from 'vee-validate/dist/rules'
+import { extend, ValidationObserver, ValidationProvider, setInteractionMode, validate } from 'vee-validate'
 
   setInteractionMode('eager')
+
+  extend('digits', {
+    ...digits,
+    message: 'Only 0 (Admin) and 1 (NonAdmin)',
+  })
 
   extend('required', {
     ...required,
@@ -243,10 +246,29 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
     message: '{_field_} may not be greater than {length} characters',
   })
 
+  extend('numeric', {
+    ...numeric,
+    message: 'Needs to be a #',
+  })
+
+  extend('min', {
+    ...min,
+    message: '{_field_} may not be less than {length} characters',
+  })
+
   extend('regex', {
     ...regex,
     message: 'Only 0 (Admin) and 1 (NonAdmin)',
   })
+
+  extend('digits_between', {
+  async validate(value, { min, max }) {
+        const res = await validate("editedItem.userName", `numeric|min:${min}|max:${max}`,)
+            return res.valid;
+  },
+  params: ['min', 'max'],
+  message: 'The {_field_} must be between {min} and {max} digits'
+});
 
 
   export default {
@@ -269,6 +291,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       items: [],
+      truefalse: ['True','False'], 
       editedIndex: -1,
       editedItem: {
         userName: '',
@@ -339,10 +362,10 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
       },
       closeUpdate () {
         this.dialogUpdate = false
-     //   this.$nextTick(() => {
-    //    this.editedItem = Object.assign({}, this.defaultItem)
-    //      this.editedIndex = -1
-        
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
       },
       async save () {
         try {
