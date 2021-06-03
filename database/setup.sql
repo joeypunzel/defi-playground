@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   userID int(11) NOT NULL AUTO_INCREMENT,
   userName varchar(255) NOT NULL,
-  isAdmin boolean default 0 NOT NULL,
+  isAdmin varchar(5) NOT NULL,
   PRIMARY KEY (userID),
   CONSTRAINT UNIQUE(userName)
 );
@@ -99,9 +99,9 @@ INSERT INTO blockchains(blockchainName) VALUES ("Binance Smart Chain");
 commit;
 
 
-INSERT INTO users(userName,isAdmin) VALUES ("Ryan",1);
-INSERT INTO users(userName,isAdmin) VALUES ("Joey",1);
-INSERT INTO users(userName,isAdmin) VALUES ("Vitalik",1);
+INSERT INTO users(userName,isAdmin) VALUES ("Ryan","Yes");
+INSERT INTO users(userName,isAdmin) VALUES ("Joey","Yes");
+INSERT INTO users(userName,isAdmin) VALUES ("Vitalik","Yes");
 commit;
 
 
