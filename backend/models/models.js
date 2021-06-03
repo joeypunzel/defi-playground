@@ -143,7 +143,6 @@ const insertCategory = (data, result) => {
 // Update Category
 const updateCategory = (data, result) => {
     let cond = [data.categoryName, data.origCategoryName]
-    console.log(cond)
     db.query("UPDATE categories SET categoryName = ? where categoryName = ?",cond, (err, results) => {             
         if(err) {
             console.log(err);
