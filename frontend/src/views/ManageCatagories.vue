@@ -64,7 +64,7 @@
             <v-btn
               color="blue darken-1"
               text
-              @click="close"
+              @click="clear"
             >
               Cancel
             </v-btn>
@@ -141,7 +141,7 @@
               <v-btn
                 color="blue darken-1"
                 text
-                @click="close"
+                @click="clear"
               >
                 Cancel
               </v-btn>
@@ -351,6 +351,8 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
       },
       clear () {
         this.categoryName = ''
+        this.dialog = false
+        this.dialogUpdate = false
         this.$refs.observer.reset()
       },
     },
