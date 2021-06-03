@@ -109,19 +109,19 @@ INSERT INTO projects(blockchainID, categoryID, projectName, description, incepti
 VALUES((SELECT blockchainID from blockchains where blockchainName = "Ethereum"),
 (SELECT categoryID from categories where categoryName = "Lending"),
 "Aave", "Open Source & Non-Custodial protocol to earn interest on deposits and borrow assets",
-"2017", 6845029959);
+"2017", 5071188554);
 
 INSERT INTO projects(blockchainID, categoryID, projectName, description, inceptionDate, marketCap )
 VALUES((SELECT blockchainID from blockchains where blockchainName = "Binance Smart Chain"),
 (SELECT categoryID from categories where categoryName = "Decentralized exchange"),
 "PancakeSwap", "Enables users to swap between cryptocurrency assets on a fast/inexpensive alternative to Ethereum",
-"2017", 6845029959);
+"2020", 3643625662);
 
 INSERT INTO projects(blockchainID, categoryID, projectName, description, inceptionDate, marketCap )
 VALUES((SELECT blockchainID from blockchains where blockchainName = "Ethereum"),
 (SELECT categoryID from categories where categoryName = "Asset Management"),
 "Zapper", "Enables users to swap between cryptocurrency assets on a fast/inexpensive alternative to Ethereum",
-"2017", 6845029959);
+"2020", 20217251);
 commit;
 
 
