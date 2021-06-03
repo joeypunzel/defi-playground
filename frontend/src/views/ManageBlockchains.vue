@@ -84,6 +84,8 @@
       </validation-observer>
         </v-card>
       </v-dialog>
+
+
         <v-dialog
           v-model="dialog"
           max-width="500px"
@@ -104,19 +106,35 @@
               <span class="headline">{{ formTitle }}</span>
             </v-card-title>
 
+            <validation-observer
+            ref="observer"
+            v-slot="{ invalid }"
+          >
+            <form @submit.prevent="submit">
+
             <v-card-text>
               <v-container>
                 <v-row>
                   <v-col
-                    cols="12"
-                    sm="6"
-                    md="400"
-                  >
-                    <v-text-field
-                      v-model="editedItem.blockchainName"
-                      label="Blockchain Name"
-                    ></v-text-field>
-                  </v-col>
+                  cols="12"
+                  sm="6"
+                  md="400"
+                >
+                <validation-provider
+                v-slot="{ errors }"
+                name="Blockchain Name"
+                rules="required|max:25"
+              >
+                  <v-text-field
+                    v-model="editedItem.blockchainName"
+                    label="Blockchain Name"
+                    :counter="25"
+                    :error-messages="errors"
+                    required
+                  ></v-text-field>
+                </validation-provider>
+
+                </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -134,10 +152,15 @@
                 color="blue darken-1"
                 text
                 @click="save"
+                class="mr-4"
+                type="submit"
+                :disabled="invalid"
               >
                 Save
               </v-btn>
             </v-card-actions>
+          </form>
+        </validation-observer>
           </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
@@ -332,11 +355,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
         this.$refs.observer.validate()
       },
       clear () {
-        this.name = ''
-        this.phoneNumber = ''
-        this.email = ''
-        this.select = null
-        this.checkbox = null
+        this.blockchainName = ''
         this.$refs.observer.reset()
       },
     },
