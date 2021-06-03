@@ -350,11 +350,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
         this.$refs.observer.validate()
       },
       clear () {
-        this.name = ''
-        this.phoneNumber = ''
-        this.email = ''
-        this.select = null
-        this.checkbox = null
+        this.categoryName = ''
         this.$refs.observer.reset()
       },
     },

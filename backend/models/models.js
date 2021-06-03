@@ -244,7 +244,6 @@ const insertFavorite = (data,result) => {
     db.query("insert into favorites (userID,projectID) VALUES ((select userID from users where userID=1),(select projectID from projects where ?))",[data], (err, results) => {             
         if(err) {
             console.log(err);
-            console.log(result)
             result(err, null);
         } else {
             result(null, results);

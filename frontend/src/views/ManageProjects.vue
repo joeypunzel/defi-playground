@@ -26,81 +26,137 @@
             <span class="headline">{{ formTitle }}</span>
           </v-card-title>
 
+          <validation-observer
+          ref="observer"
+          v-slot="{ invalid }"
+        >
+          <form @submit.prevent="submit">
+
           <v-card-text>
             <v-container>
               <v-row>
                 <v-col
-                  cols="24"
-                  sm="12"
-                  md="8"
-                >
+                cols="12"
+                sm="6"
+                md="400"
+              >
+              <validation-provider
+              v-slot="{ errors }"
+              name="Project Name"
+              rules="required|max:25"
+            >
                   <v-text-field
                     v-model="editedItem.projectName"
                     label="Project Name"
-                    outlined
+                    :counter="25"
+                    :error-messages="errors"
+                    required
                   ></v-text-field>
+                </validation-provider>
                 </v-col>
                 <v-col
-                  cols="24"
-                  sm="12"
-                  md="8"
-                >
+                cols="12"
+                sm="6"
+                md="400"
+              >
+              <validation-provider
+              v-slot="{ errors }"
+              name="marketCap"
+              rules="required|numeric|max:12"
+            >
                   <v-text-field
                     v-model="editedItem.marketCap"
                     label="marketCap"
-                    outlined
+                    :counter="12"
+                    :error-messages="errors"
+                    required
                   ></v-text-field>
+                </validation-provider>
+
                 </v-col>
+                
                 <v-col
                 class="d-flex"
                 cols="12"
                 sm="6"
               >
+              <validation-provider
+              v-slot="{ errors }"
+              name="blockchainName"
+              rules="required"
+            >
                 <v-select
                   :items="blockchain_items"
                   item-text="blockchainName"
                   item-value="blockchainID"
                   v-model="editedItem.blockchainName"
                   label="blockchainName"
-                  outlined
+                  :error-messages="errors"
+                  required
                 ></v-select>
+              </validation-provider>
               </v-col>
               <v-col
               class="d-flex"
               cols="12"
               sm="6"
             >
+            <validation-provider
+            v-slot="{ errors }"
+            name="blockchainName"
+            rules="required"
+          >
               <v-select
                 :items="category_items"
                 item-text="categoryName"
                 item-value="categoryID"
                 v-model="editedItem.categoryName"
                 label="categoryName"
-                outlined
+                :error-messages="errors"
+                required
               ></v-select>
+            </validation-provider>
             </v-col>
-                <v-col
-                  cols="40"
-                  sm="25"
-                  md="14"
-                >
+            <v-col
+            cols="12"
+            sm="6"
+            md="400"
+          >
+          <validation-provider
+          v-slot="{ errors }"
+          name="description"
+          rules="required|max:100"
+        >
                   <v-text-field
                     v-model="editedItem.description"
                     label="description"
-                    outlined
+                    :counter="100"
+                    :error-messages="errors"
+                    required
                   ></v-text-field>
+                </validation-provider>
+
                 </v-col>
+              <validation-provider
+              v-slot="{ errors }"
+              name="marketCap"
+              rules="required|numeric|max:4"
+            >
                 <v-col
                   cols="24"
                   sm="12"
-                  md="8"
+                  md="400"
                 >
                 <v-text-field
                 v-model="editedItem.inceptionDate"
                 label="Creation Year (YYYY)"
-                outlined
+                :counter="4"
+                :error-messages="errors"
+                required
               ></v-text-field>
                 </v-col>
+              </validation-provider>
+
               </v-row>
             </v-container>
           </v-card-text>
@@ -118,10 +174,15 @@
               color="blue darken-1"
               text
               @click="updateSql"
+              class="mr-4"
+              type="submit"
+              :disabled="invalid"
             >
               Update
             </v-btn>
           </v-card-actions>
+        </form>
+      </validation-observer>
         </v-card>
       </v-dialog>
 
@@ -147,81 +208,137 @@
               <span class="headline">{{ formTitle }}</span>
             </v-card-title>
 
+            <validation-observer
+            ref="observer"
+            v-slot="{ invalid }"
+          >
+            <form @submit.prevent="submit">
+
             <v-card-text>
               <v-container>
                 <v-row>
                   <v-col
-                    cols="24"
-                    sm="12"
-                    md="8"
-                  >
+                  cols="12"
+                  sm="6"
+                  md="400"
+                >
+                <validation-provider
+                v-slot="{ errors }"
+                name="Project Name"
+                rules="required|max:25"
+              >
                     <v-text-field
                       v-model="editedItem.projectName"
                       label="Project Name"
-                      outlined
+                      :counter="25"
+                      :error-messages="errors"
+                      required
                     ></v-text-field>
+                  </validation-provider>
                   </v-col>
                   <v-col
-                    cols="24"
-                    sm="12"
-                    md="8"
-                  >
+                  cols="12"
+                  sm="6"
+                  md="400"
+                >
+                <validation-provider
+                v-slot="{ errors }"
+                name="Market Cap"
+                rules="required|numeric|max:12"
+              >
                     <v-text-field
                       v-model="editedItem.marketCap"
-                      label="marketCap"
-                      outlined
+                      label="Market Cap"
+                      :counter="12"
+                      :error-messages="errors"
+                      required
                     ></v-text-field>
+                  </validation-provider>
+  
                   </v-col>
+                  
                   <v-col
                   class="d-flex"
                   cols="12"
                   sm="6"
                 >
+                <validation-provider
+                v-slot="{ errors }"
+                name="blockchainName"
+                rules="required"
+              >
                   <v-select
                     :items="blockchain_items"
                     item-text="blockchainName"
                     item-value="blockchainID"
                     v-model="editedItem.blockchainName"
                     label="blockchainName"
-                    outlined
+                    :error-messages="errors"
+                    required
                   ></v-select>
+                </validation-provider>
                 </v-col>
                 <v-col
                 class="d-flex"
                 cols="12"
                 sm="6"
               >
+              <validation-provider
+              v-slot="{ errors }"
+              name= "CategoryName"
+              rules="required"
+            >
                 <v-select
                   :items="category_items"
                   item-text="categoryName"
                   item-value="categoryID"
                   v-model="editedItem.categoryName"
-                  label="categoryName"
-                  outlined
+                  label="CategoryName"
+                  :error-messages="errors"
+                  required
                 ></v-select>
+              </validation-provider>
               </v-col>
-                  <v-col
-                    cols="40"
-                    sm="25"
-                    md="14"
-                  >
+              <v-col
+              cols="12"
+              sm="6"
+              md="400"
+            >
+            <validation-provider
+            v-slot="{ errors }"
+            name="description"
+            rules="required|max:100"
+          >
                     <v-text-field
                       v-model="editedItem.description"
                       label="description"
-                      outlined
+                      :counter="100"
+                      :error-messages="errors"
+                      required
                     ></v-text-field>
+                  </validation-provider>
+
                   </v-col>
+                <validation-provider
+                v-slot="{ errors }"
+                name="Creation Year (YYYY)"
+                rules="required|numeric|max:4"
+              >
                   <v-col
                     cols="24"
                     sm="12"
-                    md="8"
+                    md="400"
                   >
                   <v-text-field
                   v-model="editedItem.inceptionDate"
                   label="Creation Year (YYYY)"
-                  outlined
+                  :counter="4"
+                  :error-messages="errors"
+                  required
                 ></v-text-field>
                   </v-col>
+                </validation-provider>
+
                 </v-row>
               </v-container>
             </v-card-text>
@@ -239,10 +356,15 @@
                 color="blue darken-1"
                 text
                 @click="save"
+                class="mr-4"
+                type="submit"
+                :disabled="invalid"
               >
                 Save
               </v-btn>
             </v-card-actions>
+          </form>
+        </validation-observer>
           </v-card>
         </v-dialog>
 
@@ -288,8 +410,31 @@
 <script>
 // import axios
 import axios from "axios";
+import { required, max, numeric } from 'vee-validate/dist/rules'
+import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+
+  setInteractionMode('eager')
+
+  extend('required', {
+    ...required,
+    message: '{_field_} can not be empty',
+  })
+
+  extend('max', {
+    ...max,
+    message: '{_field_} may not be greater than {length} characters',
+  })
+
+  extend('numeric', {
+    ...numeric,
+    message: 'Can only be a number',
+  })
 
   export default {
+    components: {
+      ValidationProvider,
+      ValidationObserver,
+    },
     data: () => ({
       dialog: false,
       dialogDelete: false,
@@ -471,6 +616,18 @@ import axios from "axios";
               console.log(err);
         }
         },
+      submit () {
+        this.$refs.observer.validate()
+      },
+      clear () {
+        this.projectName = "";
+        this.marketCap = "";
+        this.blockchainID = "";
+        this.categoryName = "";
+        this.description = "";
+        this.inceptionDate = "";
+        this.$refs.observer.reset()
+      },
     },
   }
 </script>
