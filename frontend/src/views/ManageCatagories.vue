@@ -43,12 +43,12 @@
                 >
                 <validation-provider
                 v-slot="{ errors }"
-                name="Catagory Name"
+                name="Category Name"
                 rules="required|max:25"
               >
                   <v-text-field
                     v-model="editedItem.categoryName"
-                    label="Catagory Name"
+                    label="Category Name"
                     :counter="25"
                     :error-messages="errors"
                     required
@@ -120,12 +120,12 @@
                 >
                 <validation-provider
                 v-slot="{ errors }"
-                name="Catagory Name"
+                name="Category Name"
                 rules="required|max:25"
               >
                   <v-text-field
                     v-model="editedItem.categoryName"
-                    label="Catagory Name"
+                    label="Category Name"
                     :counter="25"
                     :error-messages="errors"
                     required
