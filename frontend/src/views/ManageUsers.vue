@@ -320,7 +320,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode, val
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       items: [],
-      truefalse: ['True','False'], 
+      truefalse: ['Yes','No'], 
       editedIndex: -1,
       editedItem: {
         userName: '',
