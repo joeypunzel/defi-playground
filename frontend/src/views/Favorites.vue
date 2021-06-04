@@ -109,7 +109,7 @@ import axios from "axios";
     methods: {
       async getFavorites() {
         try {
-          const response = await axios.get("http://localhost:3344/favoriteList"); //http://localhost:3344/favoriteList
+          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/favoriteList"); //http://flip1.engr.oregonstate.edu:3344/favoriteList
           this.items = response.data;
         } catch (err) {
           console.log(err);
@@ -154,7 +154,7 @@ import axios from "axios";
       },
       async deleteSql () {
         try {
-          await axios.post("http://localhost:3344/deleteFavorite", { //http://flip1.engr.oregonstate.edu:3344
+          await axios.post("http://flip1.engr.oregonstate.edu:3344/deleteFavorite", { //http://flip1.engr.oregonstate.edu:3344
             projectName: this.editedItem.projectName
           });
         } catch (err) {

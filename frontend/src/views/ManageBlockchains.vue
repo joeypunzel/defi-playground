@@ -271,7 +271,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
     methods: {
       async getBlockchains() {
         try {
-          const response = await axios.get("http://localhost:3344/blockchainList"); //http://flip1.engr.oregonstate.edu:3344
+          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/blockchainList"); //http://flip1.engr.oregonstate.edu:3344
           this.items = response.data;
         } catch (err) {
           console.log(err);
@@ -316,7 +316,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
       },
       save () {
           try {
-             axios.post("http://localhost:3344/blockchainList", { //http://localhost:3344/blockchainList
+             axios.post("http://flip1.engr.oregonstate.edu:3344/blockchainList", { //http://flip1.engr.oregonstate.edu:3344/blockchainList
               blockchainName: this.editedItem.blockchainName
             });
             this.blockchainName = "";
@@ -330,7 +330,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
           },
       async deleteSql () {
         try {
-          await axios.post("http://localhost:3344/deleteBlockchain", { //http://localhost:5000/deleteBlockchain
+          await axios.post("http://flip1.engr.oregonstate.edu:3344/deleteBlockchain", { //http://localhost:5000/deleteBlockchain
             blockchainName: this.editedItem.blockchainName
           });
         } catch (err) {
@@ -340,7 +340,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode } fr
       async updateSql () {
         this.items.splice(this.editedIndex, 1)
         try {
-          await axios.post("http://localhost:3344/updateBlockchain", { //http://localhost:5000/updateBlockchain
+          await axios.post("http://flip1.engr.oregonstate.edu:3344/updateBlockchain", { //http://localhost:5000/updateBlockchain
               blockchainName: this.editedItem.blockchainName,
               origBlockchainName: this.origItem.blockchainName
               });

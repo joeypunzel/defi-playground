@@ -353,7 +353,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode, val
     methods: {
       async getUsers() {
         try {
-          const response = await axios.get("http://localhost:3344/userList"); //http://flip1.engr.oregonstate.edu:3344
+          const response = await axios.get("http://flip1.engr.oregonstate.edu:3344/userList"); //http://flip1.engr.oregonstate.edu:3344
           this.items = response.data;
         } catch (err) {
           console.log(err);
@@ -398,7 +398,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode, val
       },
       async save () {
         try {
-          await axios.post("http://localhost:3344/userList", { //http://localhost:3344/userList
+          await axios.post("http://flip1.engr.oregonstate.edu:3344/userList", { //http://flip1.engr.oregonstate.edu:3344/userList
             userName: this.editedItem.userName,
             isAdmin: this.editedItem.isAdmin
           });
@@ -412,7 +412,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode, val
         },
       async deleteSql () {
           try {
-            await axios.post("http://localhost:3344/deleteUser", { //http://localhost:3344/userList
+            await axios.post("http://flip1.engr.oregonstate.edu:3344/deleteUser", { //http://flip1.engr.oregonstate.edu:3344/userList
               userName: this.editedItem.userName,
               isAdmin: this.editedItem.isAdmin
             });
@@ -423,7 +423,7 @@ import { extend, ValidationObserver, ValidationProvider, setInteractionMode, val
       async updateSql () {
           this.items.splice(this.editedIndex, 1)
           try {
-            await axios.post("http://localhost:3344/updateUser", { //http://localhost:3344/userList
+            await axios.post("http://flip1.engr.oregonstate.edu:3344/updateUser", { //http://flip1.engr.oregonstate.edu:3344/userList
                 userName: this.editedItem.userName,
                 isAdmin: this.editedItem.isAdmin,
                 origUserName: this.origItem.userName
